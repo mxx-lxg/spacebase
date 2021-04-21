@@ -10,7 +10,7 @@ class DeviceScanner():
         #alles aus dev holen
         for (dirpath, dirnames, filenames) in walk("/dev/"):
             #USB verbindungen filtern
-            filtered_filenames = [filename for filename in filenames if filename.startswith("tty")]
+            filtered_filenames = [filename for filename in filenames if filename.startswith("ttyACM")]
 
             #USB verbindungen durchgehen
             for filename in filtered_filenames:
