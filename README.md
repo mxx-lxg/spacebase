@@ -46,9 +46,17 @@ keyboard keys are bound as followes:
 
 `7` toggle heater on/off
 
+## Planned features
+
+* web-based dashboard
+* webcam integration
+* REST-API
+
 ## Far future planned features
 
 * control of energy curtains
 * light-control
 * air-circulation
-* geothermal air-conditioning
+* geothermal AC
+* general/modular AC
+* integration into Home Assistant
