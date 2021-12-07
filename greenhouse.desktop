@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Greenhouse
-Exec=lxterminal --command "sudo python3 /home/pi/spacebase/src/spacebase.py;$SHELL"
+Exec=lxterminal --command "sudo python3 /home/pi/spacebase/system/spacebase.py;$SHELL"
 Terminal=true

@@ -18,7 +18,7 @@ Spacebase aims to fully automate a greenhouse, including:
 4. ???
 5. profit
 
-To manually start Spacebase simply execute `sudo python3 spacebase.py` inside the src folder. Mind that sudo is required for keyboard access.
+To manually start Spacebase simply execute `sudo python3 spacebase.py` inside the system folder. Mind that sudo is required for keyboard access.
 
 ## Autostart
 
