@@ -13,8 +13,9 @@ from RelayController import Heater
 
 #log setup
 # set up logging to file
+print("working directory: " + os.getcwd())
 logging.basicConfig(
-     filename='spacebase.log',
+     filename='./spacebase.log',
      level=logging.INFO, 
      format= '[%(asctime)s] %(name)s: %(levelname)s - %(message)s',
      datefmt='%d.%m.%Y %H:%M:%S'
@@ -40,7 +41,7 @@ if not os.path.exists(PIPE_PATH):
 #Konfiguartion laden
 print("loading config")
 config = configparser.ConfigParser()
-config.read('/home/pi/greenhouse/spacebase.conf')
+config.read('/home/pi/spacebase/src/spacebase.conf')
 heaterStartVal = float(config['climate']['heater_threshold'])
 heaterStopVal = float(config['climate']['heater_stop'])
 stage1 = float(config['windows']['stage_1'])    #TODO in objekt
