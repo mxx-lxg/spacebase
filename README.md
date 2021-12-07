@@ -59,7 +59,7 @@ keyboard keys are bound as followes:
 ## Far future planned features
 
 * control of energy curtains
-* light-control
+* control of artificial light sources
 * air-circulation and -ventilation
 * geothermal AC
 * general/modular AC
