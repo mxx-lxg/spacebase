@@ -37,9 +37,13 @@ Most hardware modules are based on Arduinos. When plugged into the control syste
 keyboard keys are bound as followes:
 
 `1` - force close windows
+
 `2` - force open windows
+
 `3` - set windows to atomated mode
+
 `4` - run window recalibration cycle
+
 `7` - toggle heater on/off
 
 ## Far future planned features
