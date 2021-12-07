@@ -60,3 +60,4 @@ keyboard keys are bound as followes:
 * geothermal AC
 * general/modular AC
 * integration into Home Assistant
+* support for multiple greenhouses
