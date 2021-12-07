@@ -65,3 +65,7 @@ keyboard keys are bound as followes:
 * general/modular AC
 * integration into Home Assistant
 * support for multiple greenhouses
+
+## License
+
+SpaceBase is licensed under the GNU GPLv3. See license file.
