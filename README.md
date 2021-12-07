@@ -9,10 +9,10 @@ As the name kind of suggests, i got inspired by the spacebucket community. You c
 ## Key features 
 
 * automated opening and closing of windows, based on temperature, as well as time of day
-* automated irrigation of plants
+* automated irrigation of multiple zones/pots
 * water-reservoir management
 * emergency defrosting
-* logging and displaying information like soil-moisture, temperature and humidity and sun-exposure
+* logging and displaying information like soil-moisture, temperature, humidity, sun-exposure and water-usage
 
 ## Basic use
 
@@ -26,7 +26,7 @@ To manually start Spacebase simply execute `sudo python3 spacebase.py` inside th
 
 ## Autostart
 
-Place the greenhouse.desktop file in  `/home/pi/.config/autostart` and modify the path to spacebase.py.
+Place the greenhouse.desktop file in  `/home/pi/.config/autostart` and modify the path to spacebase.py accordingly.
 
 ## Configuration
 
@@ -34,7 +34,7 @@ In the config file temperatures are stated in °Celsius. Time is stated in Secon
 
 ## Hardware modules / Serial API
 
-Most hardware modules are based on Arduinos. When plugged into the control system via USB they should automatically be detected on startup. I will make a detailed documentation for the Serial API available as soon as i get to it, so you can integrate your own hardware.
+Most hardware modules provided in this repo are based on Arduinos. When plugged into the control system via USB they should automatically be detected on startup. I will make a detailed documentation for the Serial API available as soon as i get to it, so you can integrate your own hardware.
 
 ## Manual controls
 
@@ -65,6 +65,8 @@ keyboard keys are bound as followes:
 * general/modular AC
 * integration into Home Assistant
 * support for multiple greenhouses
+* some form of robotics-integration to remotely inspect individual plants
+* automated fertilizer application, probably based on soil- and water-acidity.
 
 ## License
 
