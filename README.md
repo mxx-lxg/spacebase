@@ -1,14 +1,18 @@
 # SpaceBase
-The Raspberry Pi based greenhouse control system.
+
+The Raspberry Pi based greenhouse control system. 
+
+Spacebase aims to fully automate a greenhouse in a way that is easy to use and expand. The ultimate goal is to be able to put your plants in a greenhouse, fire up Spacebase and leave your plants alone until it is time to harvest. I started developing this project to bridge the gap between my love for gardening and tinkering with electronics... and because i keep forgetting to water my vegetables. 
+
+As the name kind of suggest i got inspired by the spacebucket community. You can probably use SpaceBase to control a spacebucket as well. 
 
 ## Key features 
-
-Spacebase aims to fully automate a greenhouse, including:
 
 * automated opening and closing of windows, based on temperature, as well as time of day
 * automated irrigation of plants
 * water-reservoir management
 * emergency defrosting
+* display dashboard, that is readable under direct sunlight
 
 ## Basic use
 
@@ -56,7 +60,7 @@ keyboard keys are bound as followes:
 
 * control of energy curtains
 * light-control
-* air-circulation
+* air-circulation and -ventilation
 * geothermal AC
 * general/modular AC
 * integration into Home Assistant
