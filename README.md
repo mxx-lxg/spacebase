@@ -1,6 +1,6 @@
-# spacebase
-Greenhose Control
+# SpaceBase
+The Raspberry Pi based greenhose control system.
 
-##Autostart
+## Autostart
 
 Place the greenhouse.desktop file in  /home/pi/.config/autostart and modify the path to spacebase.py.
