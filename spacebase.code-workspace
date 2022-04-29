@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "Environment",
+			"path": "hardware\\Environment"
+		},
+		{
+			"name": "Windows",
+			"path": "hardware\\Windows"
+		},
+		{
+			"path": "hardware\\common\\spacebase-utils"
+		},
+		{
+			"name": "solar-controller",
+			"path": "..\\solar-controller"
+		}
+	],
+	"settings": {}
+}
