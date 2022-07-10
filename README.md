@@ -22,7 +22,9 @@ As the name kind of suggests, i got inspired by the spacebucket community. You c
 4. ???
 5. profit
 
-To manually start Spacebase simply execute `sudo python3 spacebase.py` inside the system folder. Mind that sudo is required for keyboard access.
+To manually start Spacebase simply execute `sudo python3 spacebase.py` inside the system folder. 
+
+> Mind that sudo is required for keyboard access.
 
 ## Autostart
 
