@@ -41,7 +41,7 @@ if not os.path.exists(PIPE_PATH):
 #Konfiguartion laden
 print("loading config")
 config = configparser.ConfigParser()
-config.read('/home/pi/spacebase/src/spacebase.conf')
+config.read('/home/pi/spacebase/system/spacebase.conf')
 heaterStartVal = float(config['climate']['heater_threshold'])
 heaterStopVal = float(config['climate']['heater_stop'])
 stage1 = float(config['windows']['stage_1'])    #TODO in objekt
