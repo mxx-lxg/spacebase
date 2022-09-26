@@ -15,7 +15,7 @@ class Windows(Device):
         self.init()
 
     def reset(self):
-        logger.info("windows reset")
+        self.logger.info("windows reset")
         self.sendCommand("RESET")
         self.resetInProgress = True
         self.locked = False
@@ -24,19 +24,19 @@ class Windows(Device):
         self.sendCommand("INIT")
 
     def forceClosed(self):
-        logger.info("windows forced closed")
+        self.logger.info("windows forced closed")
         self.locked = False
         self.setToStage(0)
         self.locked = True
 
     def forceOpened(self):
-        logger.info("windows forced opened")
+        self.logger.info("windows forced opened")
         self.locked = False
         self.setToStage(4)
         self.locked = True
 
     def unforce(self):
-        logger.info("windows set to auto")
+        self.logger.info("windows set to auto")
         self.locked = False
         
     def setToStage(self, stage):
