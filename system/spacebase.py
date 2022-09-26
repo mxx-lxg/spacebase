@@ -146,7 +146,7 @@ while True:
         environment.getAtmospherics()
 
         #Dashboard aktualisieren
-        dashboard.set(environment.lastTemperature, environment.lastHumidity, windows.currentStage)
+        #dashboard.set(environment.lastTemperature, environment.lastHumidity, windows.currentStage)
 
         #Frostschutz Heizung
         if not heatingInProgress:
