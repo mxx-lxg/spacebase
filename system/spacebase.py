@@ -1,6 +1,7 @@
 from Irrigation import Irrigation
 from Windows import Windows
 from Environment import Environment
+from Moisture import Moisture
 from DeviceScanner import DeviceScanner
 from DataLogger import DataLogger
 import logging
@@ -72,6 +73,7 @@ scannedDevices = DeviceScanner.findDevices()
 windows = None
 environment = None
 irrigation = None
+moisture = [] 
 
 #UI
 #dashboard = Dashboard()
@@ -88,6 +90,9 @@ for path in scannedDevices:
     if device == "irrigation":
         irrigation = Irrigation(path)
         irrigation.init()
+    if device == "moisture":
+        moisture.append(Moisture(path))
+        moisture[-1].init()
 
 #Sonnenauf- und untergang
 sunrise = 0
@@ -118,7 +123,6 @@ while True:
     climateLogInterval = int(config['climate']['log_interval'])
 
     #Klima
-    #TODO Boden-Feuchtigkeit
     if environment and currentPass >= lastClimateUpdate + climateLogInterval:
         #Klimadaten speichern
         print("{0} | Temperature: {1} °C | Humidity: {2} % - logged \r".format(
@@ -128,7 +132,19 @@ while True:
         ))
 
         dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
-        lastClimateUpdate = currentPass
+
+    #Bodenfeuchtigkeit
+    if moisture and currentPass >= lastClimateUpdate + climateLogInterval:
+        #Bodenfeuchtigkeit speichern
+        for patch in moisture:
+            print("{0} | Beet {1} Feuchtigkeit: {2} % - logged \r".format(
+                datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                patch.patchId,
+                patch.lastMoisture
+            ))
+        #TODO moisture logging
+
+    lastClimateUpdate = currentPass
 
     #Fenster
     if windows and environment and currentPass >= lastWindowCheck + windowInterval:
