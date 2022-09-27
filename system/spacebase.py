@@ -1,3 +1,4 @@
+from Irrigation import Irrigation
 from Windows import Windows
 from Environment import Environment
 from DeviceScanner import DeviceScanner
@@ -70,6 +71,7 @@ keyboard.add_hotkey('7', lambda: heater.heaterToggle())
 scannedDevices = DeviceScanner.findDevices()
 windows = None
 environment = None
+irrigation = None
 
 #UI
 #dashboard = Dashboard()
@@ -83,6 +85,9 @@ for path in scannedDevices:
     if device == "environment":
         environment = Environment(path)
         environment.init()
+    if device == "irrigation":
+        irrigation = Irrigation(path)
+        irrigation.init()
 
 #Sonnenauf- und untergang
 sunrise = 0
@@ -112,8 +117,9 @@ while True:
     windowInterval = int(config['windows']['check_interval'])
     climateLogInterval = int(config['climate']['log_interval'])
 
-    #Klima (aus Window Klasse abspalten)
-    if windows and environment and currentPass >= lastClimateUpdate + climateLogInterval:
+    #Klima
+    #TODO Boden-Feuchtigkeit
+    if environment and currentPass >= lastClimateUpdate + climateLogInterval:
         #Klimadaten speichern
         print("{0} | Temperature: {1} °C | Humidity: {2} % - logged \r".format(
             datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -139,6 +145,14 @@ while True:
             windows.setToStage(0)
     
         lastWindowCheck = currentPass
+
+    #Bewässerung
+    #1 mal morgens
+        #Bewässerung unabhängig von Feuchtigkeit
+    #2 mal täglich
+        #Liste der beete durchgehen und für jedes Moisture Sensor abfragen
+        #Wenn unter Grenze Bewässerung aktivieren
+
     
     #Sekundentakt
     if currentPass >= lastPass + 1 and environment:
@@ -153,7 +167,7 @@ while True:
             if environment.lastTemperature <= heaterStartVal: 
                 heater.heaterOn()
                 heatingInProgress = True
-                logger.warning("below frost threshold")
+                logger.warning("below frost threshold: " + str(environment.lastTemperature))
                 print("start heating up")
         else: 
             if environment.lastTemperature >= heaterStopVal: 
