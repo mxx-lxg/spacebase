@@ -12,11 +12,11 @@
 			"path": "hardware\\common\\spacebase-utils"
 		},
 		{
-			"name": "solar-controller",
-			"path": "..\\solar-controller"
+			"path": "system"
 		},
 		{
-			"path": "system"
+			"name": "Moisture",
+			"path": "hardware/Moisture"
 		}
 	],
 	"settings": {}

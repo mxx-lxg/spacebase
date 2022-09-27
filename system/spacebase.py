@@ -105,15 +105,15 @@ logger.info("startup complete")
 #system summary
 print("\n********* system summary *********")
 if windows:
-    print("\n* window actuators")
+    print("* window actuators")
 if environment:
-    print("\n* environmental sensors")
+    print("* environmental sensors")
 if irrigation:
-    print("\n* irrigation and water management")
+    print("* irrigation and water management")
 if moisture:
-    print("\n* soil-moisture sensors:")
+    print("* soil-moisture sensors:")
     for patch in moisture:
-        print("\n   " + patch.pachId)
+        print("    " + patch.pachId)
 
 
 #config info
@@ -129,6 +129,7 @@ print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(sta
 #main Loop
 lastWindowCheck = int(time.time())
 lastClimateUpdate = int(time.time())
+lastMoistureUpdate = int(time.time())
 lastPass = int(time.time())
 heatingInProgress = False
 
@@ -147,9 +148,10 @@ while True:
         ))
 
         dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
+        lastClimateUpdate = currentPass
 
     #Bodenfeuchtigkeit
-    if moisture and currentPass >= lastClimateUpdate + climateLogInterval:
+    if moisture and currentPass >= lastMoistureUpdate + climateLogInterval:
         #Bodenfeuchtigkeit speichern
         for patch in moisture:
             print("{0} | Beet {1} Feuchtigkeit: {2} % - logged \r".format(
@@ -158,8 +160,8 @@ while True:
                 patch.lastMoisture
             ))
         #TODO moisture logging
+        lastMoistureUpdate = currentPass
 
-    lastClimateUpdate = currentPass
 
     #Fenster
     if windows and environment and currentPass >= lastWindowCheck + windowInterval:
