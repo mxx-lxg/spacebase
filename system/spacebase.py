@@ -113,7 +113,7 @@ if irrigation:
 if moisture:
     print("* soil-moisture sensors:")
     for patch in moisture:
-        print("    " + patch.pachId)
+        print("    " + patch.patchId)
 
 
 #config info
