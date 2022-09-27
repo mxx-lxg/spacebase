@@ -101,6 +101,21 @@ sunset = 0
 #startup end
 logger.info("startup complete")
 
+
+#system summary
+print("\n********* system summary *********")
+if windows:
+    print("\n* window actuators")
+if environment:
+    print("\n* environmental sensors")
+if irrigation:
+    print("\n* irrigation and water management")
+if moisture:
+    print("\n* soil-moisture sensors:")
+    for patch in moisture:
+        print("\n   " + patch.pachId)
+
+
 #config info
 print("\n********* Configuration *********")
 print("\n* Heater")
