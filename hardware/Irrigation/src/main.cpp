@@ -21,6 +21,28 @@ String sendReady(String deviceType){
     return "READY:" + deviceType;
 }
 
+void openValve(int id){
+  delay(500);
+  Serial.println("000:OPENED:" + id);
+}
+
+void closeValves(){
+  delay(500);
+  Serial.println("000:CLOSED");
+}
+
+void sendRainLevel(){
+  float rainLevel = 69.42;
+  delay(500);
+  Serial.println("000:RAIN:" + String(rainLevel, 1));
+}
+
+void sendBufferStatus(){
+  delay(500);
+  Serial.print("000:BUFFER:"); //FULL, EMPTY, PARTIAL
+  Serial.println("PARTIAL");
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -78,28 +100,4 @@ void loop() {
       }
     }
   }
-}
-
-void openValve(int id){
-  delay(500);
-  Serial.print("000:");
-  Serial.println("OPENED:" + id);
-}
-
-void closeValves(){
-  delay(500);
-  Serial.println("000:CLOSED");
-}
-
-void sendRainLevel(){
-  float rainLevel = 69.42;
-  delay(500);
-  Serial.println("000:RAIN" + String(rainLevel, 1));
-}
-
-void sendBufferStatus(){
-  delay(500);
-  Serial.print("000:RAIN");
-  Serial.print("BUFFER:"); //FULL, EMPTY, PARTIAL
-  Serial.print("PARTIAL");
 }
