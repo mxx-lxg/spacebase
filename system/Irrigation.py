@@ -25,6 +25,7 @@ class Irrigation(Device):
 
     def refillBuffer(self):
         print("refilling buffer", end="\r\n")
+        #TODO Refill übernimmt Pumpe an Relais
         self.sendCommand("REFILL")
         self.bufferRefillInProgress=True
 
@@ -46,6 +47,9 @@ class Irrigation(Device):
             
         if data[1] == "OPENED":
             print("Valve Open: " + str(data[2]), end="\r\n")
+
+        if data[1] == "CLOSED":
+            print("Irrigation valves closed", end="\r\n")
 
         if data[1] == "BUFFER":
             if data[2] == "FULL":

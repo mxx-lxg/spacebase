@@ -17,6 +17,10 @@
 		{
 			"name": "Moisture",
 			"path": "hardware/Moisture"
+		},
+		{
+			"name": "Irrigation",
+			"path": "hardware/Irrigation"
 		}
 	],
 	"settings": {}
