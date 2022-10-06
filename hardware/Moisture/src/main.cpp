@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 bool isInitialized = false;
-String patchId = "left";
+String patchId = "right";
 
 String getValue(String data, char separator, int index){
     int found = 0;

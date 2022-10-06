@@ -107,7 +107,7 @@ print("\n********* system summary *********")
 if windows:
     print("* window actuators")
 if environment:
-    print("* environmental sensors")
+    print("* environmental sensor-package")
 if irrigation:
     print("* irrigation and water management")
 if moisture:
@@ -125,6 +125,7 @@ print("   check interval (s): " + config['windows']['check_interval'])
 print("   thresholds")
 print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(stage3) + "°C | 4: " + str(stage4) + "°C")
 
+print("\n getting down to business...")
 
 #main Loop
 lastWindowCheck = int(time.time())
@@ -138,10 +139,16 @@ while True:
     windowInterval = int(config['windows']['check_interval'])
     climateLogInterval = int(config['climate']['log_interval'])
 
+
+
+
+
+#*** Sensoren ****************************************************
+
     #Klima
     if environment and currentPass >= lastClimateUpdate + climateLogInterval:
         #Klimadaten speichern
-        print("{0} | Temperature: {1} °C | Humidity: {2} % - logged \r".format(
+        print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
             datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             environment.lastTemperature,
             environment.lastHumidity
@@ -154,7 +161,7 @@ while True:
     if moisture and currentPass >= lastMoistureUpdate + climateLogInterval:
         #Bodenfeuchtigkeit speichern
         for patch in moisture:
-            print("{0} | Beet {1} Feuchtigkeit: {2} % - logged \r".format(
+            print("{0} | patch {1} moisture: {2} % - logged \r".format(
                 datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 patch.patchId,
                 patch.lastMoisture
@@ -162,6 +169,11 @@ while True:
         #TODO moisture logging
         lastMoistureUpdate = currentPass
 
+
+
+
+
+#*** Controller ****************************************************
 
     #Fenster
     if windows and environment and currentPass >= lastWindowCheck + windowInterval:
@@ -186,8 +198,11 @@ while True:
         #Liste der beete durchgehen und für jedes Moisture Sensor abfragen
         #Wenn unter Grenze Bewässerung aktivieren
 
+
+
+
     
-    #Sekundentakt
+#*** Sekundentakt ****************************************************
     if currentPass >= lastPass + 1 and environment:
         #Sensordaten holen
         environment.getAtmospherics()
