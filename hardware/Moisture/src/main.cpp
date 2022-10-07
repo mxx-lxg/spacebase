@@ -35,12 +35,11 @@ void loop() {
     
     String query = Serial.readStringUntil('\n');
 
-    String queryId = getValue(query, ':', 0);
-    String command = getValue(query, ':', 1);
-    String params = getValue(query, ':', 2);
+    String command = getValue(query, ':', 0);
+    String params = getValue(query, ':', 1);
 
     if(command == "INIT"){
-      Serial.print("000:IDENT:");
+      Serial.print("IDENT:");
       Serial.println(patchId);
       isInitialized = true;
     }
@@ -49,7 +48,7 @@ void loop() {
     if(isInitialized) {
       float m = 69;
       
-      Serial.print("000:MOIST:");
+      Serial.print("MOIST:");
       Serial.println(m);   
       delay(1000); 
     }

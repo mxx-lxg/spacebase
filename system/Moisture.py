@@ -16,9 +16,9 @@ class Moisture(Device):
 
 
     def receiver(self, data):
-        if data[1] == "MOIST":
-            self.lastMoisture = float(data[2])
+        if data[0] == "MOIST":
+            self.lastMoisture = float(data[1])
 
-        if data[1] == "IDENT":
-            self.patchId = data[2]
+        if data[0] == "IDENT":
+            self.patchId = data[1]
             

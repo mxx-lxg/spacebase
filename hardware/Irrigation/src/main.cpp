@@ -23,23 +23,23 @@ String sendReady(String deviceType){
 
 void openValve(int id){
   delay(500);
-  Serial.println("000:OPENED:" + id);
+  Serial.println("OPENED:" + id);
 }
 
 void closeValves(){
   delay(500);
-  Serial.println("000:CLOSED");
+  Serial.println("CLOSED");
 }
 
 void sendRainLevel(){
   float rainLevel = 69.42;
   delay(500);
-  Serial.println("000:RAIN:" + String(rainLevel, 1));
+  Serial.println("RAIN:" + String(rainLevel, 1));
 }
 
 void sendBufferStatus(){
   delay(500);
-  Serial.print("000:BUFFER:"); //FULL, EMPTY, PARTIAL
+  Serial.print("BUFFER:"); //FULL, EMPTY, PARTIAL
   Serial.println("PARTIAL");
 }
 
@@ -55,9 +55,8 @@ void loop() {
     
     String query = Serial.readStringUntil('\n');
 
-    String queryId = getValue(query, ':', 0);
-    String command = getValue(query, ':', 1);
-    String params = getValue(query, ':', 2);
+    String command = getValue(query, ':', 0);
+    String params = getValue(query, ':', 1);
 
     if(command == "INIT"){
       isInitialized = true;

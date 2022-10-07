@@ -16,11 +16,11 @@ class Environment(Device):
 
 
     def receiver(self, data):
-        if 2 < len(data): data[2] = float(data[2]) # value spalte zu float konvertieren
+        if 1 < len(data): data[1] = float(data[1]) # value spalte zu float konvertieren
 
-        if data[1] == "TEMP":
-            self.lastTemperature = data[2]
+        if data[0] == "TEMP":
+            self.lastTemperature = data[1]
         
-        if data[1] == "HUM":
-            self.lastHumidity = data[2]
+        if data[0] == "HUM":
+            self.lastHumidity = data[1]
             

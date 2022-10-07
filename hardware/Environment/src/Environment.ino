@@ -20,10 +20,8 @@ void loop() {
   if (Serial.available() > 0)  {
     
     String query = Serial.readStringUntil('\n');
-
-    String queryId = Comms::getValue(query, ':', 0);
-    String command = Comms::getValue(query, ':', 1);
-    String params = Comms::getValue(query, ':', 2);
+    String command = Comms::getValue(query, ':', 0);
+    String params = Comms::getValue(query, ':', 1);
 
     if(command == "INIT"){
       isInitialized = true;
@@ -34,9 +32,9 @@ void loop() {
       float t = dht.readTemperature();
       float h = dht.readHumidity();
       
-      Serial.print("000:TEMP:");
+      Serial.print("TEMP:");
       Serial.println(t);   
-      Serial.print("000:HUM:");
+      Serial.print("HUM:");
       Serial.println(h);
       delay(1000); 
     }

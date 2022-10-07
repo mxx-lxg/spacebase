@@ -47,12 +47,12 @@ class Windows(Device):
             print("window position locked. No action. \r\n")
 
     def receiver(self, data):
-        if 2 < len(data): data[2] = float(data[2]) # value spalte zu float konvertieren
+        if 1 < len(data): data[1] = float(data[1]) # value spalte zu float konvertieren
 
-        if data[1] == "MOVING":
-            self.moving = data[2]
+        if data[0] == "MOVING":
+            self.moving = data[1]
             if not(self.resetInProgress):
-                self.currentStage = data[2] - 1
+                self.currentStage = data[1] - 1
 
                 moveIllustration = ""
 
@@ -76,16 +76,14 @@ class Windows(Device):
 
                 print("resetting window "+str(int(self.moving))+" " + moveIllustration)
 
-        if data[1] == "STAGEFIN":
-            self.currentStage = data[2]
+        if data[0] == "STAGEFIN":
+            self.currentStage = data[1]
             self.moving = None
             print("finished adjusting windows")
 
 
-        if data[1] == "RESETFIN":
+        if data[0] == "RESETFIN":
             self.currentStage = 0
             self.moving = None
             self.resetInProgress = False
             print("finished resetting windows")
-
-            

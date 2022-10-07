@@ -34,8 +34,7 @@ class Device():
     #Befehl an Gerät senden
     def sendCommand(self, command):
         if self.__thread:
-            comId = random.randint(100,999)
-            package = str(comId) + ":" + str(command)
+            package = str(command)
             #print("sending : " + package)
             self.connection.write((package  + "\n").encode())
         else:

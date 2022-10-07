@@ -36,28 +36,28 @@ class Irrigation(Device):
         self.sendCommand("BUFFER")
 
     def receiver(self, data):
-        if data[1] == "REFBEGIN":
+        if data[0] == "REFBEGIN":
             self.bufferRefillInProgress=True
 
-        if data[1] == "REFEND":
+        if data[0] == "REFEND":
             self.bufferRefillInProgress=False
         
-        if data[1] == "RAIN":
-            self.rainWaterLevel = float(data[2])
+        if data[0] == "RAIN":
+            self.rainWaterLevel = float(data[1])
             
-        if data[1] == "OPENED":
-            print("Valve Open: " + str(data[2]), end="\r\n")
+        if data[0] == "OPENED":
+            print("Valve Open: " + str(data[1]), end="\r\n")
 
-        if data[1] == "CLOSED":
+        if data[0] == "CLOSED":
             print("Irrigation valves closed", end="\r\n")
 
-        if data[1] == "BUFFER":
-            if data[2] == "FULL":
+        if data[0] == "BUFFER":
+            if data[1] == "FULL":
                 self.bufferFull = True
                 self.bufferEmpty = False
-            if data[2] == "EMPTY":
+            if data[1] == "EMPTY":
                 self.bufferFull = False
                 self.bufferEmpty = True
-            if data[2] == "PARTIAL":
+            if data[1] == "PARTIAL":
                 self.bufferFull = False
                 self.bufferEmpty = False

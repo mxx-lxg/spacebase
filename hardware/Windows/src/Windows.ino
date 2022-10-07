@@ -24,45 +24,39 @@ void loop() {
     
     String query = Serial.readStringUntil('\n');
 
-    String queryId = Comms::getValue(query, ':', 0);
-    String command = Comms::getValue(query, ':', 1);
-    String params = Comms::getValue(query, ':', 2);
+    String command = Comms::getValue(query, ':', 0);
+    String params = Comms::getValue(query, ':', 1);
 
     if(command == "INIT"){
       isInitialized = true;
     }
     
     if(command == "RESET"){
-      Serial.print(queryId);
-      Serial.println(":BUSY");
-      resetWindows(queryId.toInt());
-      Serial.print(queryId);
-      Serial.println(":RESETFIN");
+      Serial.println("BUSY");
+      resetWindows();
+      Serial.println("RESETFIN");
     }
 
     if(command == "STAGE"){
       int stage = params.toInt();
-      Serial.print(queryId);
-      Serial.println(":BUSY");
+      Serial.println("BUSY");
 
-      setWindows(stage, queryId.toInt());
- 
-      Serial.print(queryId);
-      Serial.print(":STAGEFIN:");
+      setWindows(stage);
+
+      Serial.print("STAGEFIN:");
       Serial.println(windowsOpen);
     }
   }
 }
 
-void setWindows(int stage, int queryId) {
+void setWindows(int stage) {
 
   //Fenster müssen geöffnet werden
   if (windowsOpen < stage) {
     for (int i = 1; i <= 4; i++)
     {
       if (i > windowsOpen && i <= stage) {
-        Serial.print(queryId);
-        Serial.print(":MOVING:");
+        Serial.print("MOVING:");
         Serial.println(i);
         openWindow(i);
       }
@@ -74,8 +68,7 @@ void setWindows(int stage, int queryId) {
     for (int i = 1; i <= 4; i++)
     {
       if (i <= windowsOpen && i > stage) {
-        Serial.print(queryId);
-        Serial.print(":MOVING:");
+        Serial.print("MOVING:");
         Serial.println(i);
         closeWindow(i);
       }
@@ -135,7 +128,7 @@ void openWindow(int window) {
   //Ablaufblock Ende
 }
 
-void resetWindows(int queryId) {
+void resetWindows() {
   digitalWrite(3, LOW);
   digitalWrite(4, LOW);
   digitalWrite(5, LOW);
@@ -145,27 +138,19 @@ void resetWindows(int queryId) {
   digitalWrite(9, LOW);
   digitalWrite(10, LOW);
   delay(1000);
- 
-  Serial.print(queryId);
-  Serial.print(":");
+  
   Serial.println("MOVING:1");
   openWindow(1);
   closeWindow(1);
   
-  Serial.print(queryId);
-  Serial.print(":");
   Serial.println("MOVING:2");
   openWindow(2);
   closeWindow(2);
   
-  Serial.print(queryId);
-  Serial.print(":");
   Serial.println("MOVING:3");
   openWindow(3);
   closeWindow(3);
   
-  Serial.print(queryId);
-  Serial.print(":");
   Serial.println("MOVING:4");
   openWindow(4);
   closeWindow(4);
