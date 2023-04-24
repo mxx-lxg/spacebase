@@ -11,7 +11,7 @@ As the name kind of suggests, i got inspired by the spacebucket community. You c
 * automated opening and closing of windows, based on temperature, as well as time of day
 * automated irrigation of multiple zones/pots
 * water-management
-* emergency defrosting
+* frost protection
 * logging and displaying information like soil-moisture, temperature, humidity, sun-exposure and water-usage
 
 ## Basic use
