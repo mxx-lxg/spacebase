@@ -52,7 +52,7 @@ keyboard keys are bound as followes:
 
 `7` toggle heater on/off
 
-## Work-In_Progress / Testing
+## Work-In-Progress / Testing
 
 * automated irrigation and water management 
 
