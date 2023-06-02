@@ -6,7 +6,7 @@ import logging
 class MqttClient():
     broker = 'broker.emqx.io'
     port = 1883
-    topic = "greenhouse"
+    baseTopic = "greenhouse/"
     client_id = None
     FIRST_RECONNECT_DELAY = 1
     RECONNECT_RATE = 2
@@ -53,11 +53,11 @@ class MqttClient():
         self.client.on_disconnect = self.on_disconnect
         self.client.connect_async(self.broker, self.port)
     
-    def publish(self, message):
-        result = self.client.publish(self.topic, message)
+    def publish(self, topic, message):
+        result = self.client.publish(self.baseTopic + topic, message)
         # result: [0, 1]
         status = result[0]
         if status == 0:
-            print(f"Send to topic `{self.topic}`")
+            print(f"Send to topic `{self.baseTopic + topic}`")
         else:
-            print(f"Failed to send message to topic {self.topic}")
+            print(f"Failed to send message to topic {self.baseTopic + topic}")
