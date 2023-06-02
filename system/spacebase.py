@@ -10,8 +10,10 @@ import configparser
 import time
 import datetime
 import keyboard
+import MqttClient
 from Dashboard import Dashboard
 from RelayController import Heater
+
 
 #log setup
 # set up logging to file
@@ -51,9 +53,14 @@ stage2 = float(config['windows']['stage_2'])
 stage3 = float(config['windows']['stage_3'])
 stage4 = float(config['windows']['stage_4'])
 
+#MQTT Client
+mqttClient = MqttClient.mqttConnect()
+
+
+
 #Logger
 print("initialising data logs")
-dataLogger = DataLogger()
+dataLogger = DataLogger(mqttClient)
 
 #GPIO
 heater = Heater()
@@ -153,7 +160,6 @@ while True:
             environment.lastTemperature,
             environment.lastHumidity
         ))
-
         dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
         lastClimateUpdate = currentPass
 
