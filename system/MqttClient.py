@@ -1,17 +1,19 @@
 from paho.mqtt import client as mqtt_client
 import logging
 
+FIRST_RECONNECT_DELAY = 1
+RECONNECT_RATE = 2
+MAX_RECONNECT_COUNT = 12
+MAX_RECONNECT_DELAY = 60
 
+username = 'max'
+password = 'public'
 
 class MqttClient():
-    broker = 'broker.emqx.io'
+    broker = 'smart.home'
     port = 1883
     baseTopic = "greenhouse/"
     client_id = None
-    FIRST_RECONNECT_DELAY = 1
-    RECONNECT_RATE = 2
-    MAX_RECONNECT_COUNT = 12
-    MAX_RECONNECT_DELAY = 60
     logger = logging.getLogger(__name__)
 
     client = None
@@ -47,7 +49,7 @@ class MqttClient():
     def mqttConnect(self):
         # Set Connecting Client ID
         self.client = mqtt_client.Client(self.client_id)
-
+        self.client.username_pw_set(username, password)
         # client.username_pw_set(username, password)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
