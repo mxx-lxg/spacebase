@@ -20,7 +20,7 @@ class MqttClient():
     client = None
 
     def __init__(self):
-        print("init")
+        print("MQTT init")
         self.mqttConnect()
 
     def on_connect(client, userdata, flags, rc):
@@ -49,6 +49,7 @@ class MqttClient():
         print("MQTT Reconnect failed after %s attempts. Exiting...", reconnect_count)
 
     def mqttConnect(self):
+        print("MQTT connect routine")
         # Set Connecting Client ID
         self.client = mqtt_client.Client(self.client_id)
         self.client.username_pw_set(username, password)
