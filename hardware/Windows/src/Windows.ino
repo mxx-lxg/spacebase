@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <SpaceBaseUtils.h>
 
 int incomingByte = 0;    // for incoming serial data
 int windowsOpen = 0;
@@ -16,7 +15,7 @@ void setup() {
   pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
   Serial.begin(9600);  
-  Serial.println(Comms::sendReady("windows"));
+  Serial.println("READY:windows");
 }
 
 void loop() {
@@ -24,8 +23,8 @@ void loop() {
     
     String query = Serial.readStringUntil('\n');
 
-    String command = Comms::getValue(query, ':', 0);
-    String params = Comms::getValue(query, ':', 1);
+    String command = getValue(query, ':', 0);
+    String params = getValue(query, ':', 1);
 
     if(command == "INIT"){
       isInitialized = true;
@@ -156,3 +155,18 @@ void resetWindows() {
   closeWindow(4);
   windowsOpen = 0;
 }
+
+String getValue(String data, char separator, int index){
+        int found = 0;
+        int strIndex[] = { 0, -1 };
+        int maxIndex = data.length() - 1;
+
+        for (int i = 0; i <= maxIndex && found <= index; i++) {
+            if (data.charAt(i) == separator || i == maxIndex) {
+                found++;
+                strIndex[0] = strIndex[1] + 1;
+                strIndex[1] = (i == maxIndex) ? i+1 : i;
+            }
+        }
+        return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+    }

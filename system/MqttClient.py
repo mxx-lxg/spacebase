@@ -50,7 +50,7 @@ class MqttClient():
 
     def mqttConnect(self):
         # Set Connecting Client ID
-        return
+        
         self.client = mqtt_client.Client(self.client_id)
         self.client.username_pw_set(username, password)
         self.client.on_connect = self.on_connect
@@ -59,7 +59,7 @@ class MqttClient():
         self.client.loop_start()
     
     def publish(self, topic, message):
-        return
+        
         result = self.client.publish(self.baseTopic + topic, message, 0)
         # result: [0, 1]
         status = result[0]
