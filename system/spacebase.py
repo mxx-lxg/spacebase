@@ -54,13 +54,13 @@ stage3 = float(config['windows']['stage_3'])
 stage4 = float(config['windows']['stage_4'])
 
 #MQTT Client
-mqttClient = MqttClient()
+mqttClient = None# MqttClient()
 
 
 
 #Logger
 print("initialising data logs")
-dataLogger = DataLogger(mqttClient)
+dataLogger = DataLogger()
 
 #GPIO
 heater = Heater()
@@ -89,7 +89,7 @@ print("device init")
 for path in scannedDevices:
     device = scannedDevices[path]
     if device == "windows":
-        windows = Windows(path, mqttClient)
+        windows = Windows(path)
         windows.reset()
     if device == "environment":
         environment = Environment(path)
@@ -134,7 +134,7 @@ print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(sta
 
 print("\n getting down to business...")
 
-mqttClient.publish("STATE", "hello")
+if mqttClient: mqttClient.publish("STATE", "hello")
 
 #main Loop
 lastWindowCheck = int(time.time())

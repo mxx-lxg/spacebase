@@ -11,7 +11,7 @@ class Windows(Device):
     logger = logging.getLogger(__name__)
     mqttClient = None
 
-    def __init__(self, comDir, mqttClient):
+    def __init__(self, comDir, mqttClient=None):
         Device.__init__(self, comDir, "windows", self.receiver)
         self.mqttClient = mqttClient
         self.init()
@@ -45,7 +45,7 @@ class Windows(Device):
         if not(self.locked):
             print("setting windows to stage: " + str(stage), end="\r\n")
             self.sendCommand("STAGE:" + str(stage))
-            self.mqttClient.publish("WINDOWS", stage)
+            if self.mqttClient: self.mqttClient.publish("WINDOWS", stage)
         else:
             print("window position locked. No action. \r\n")
 
