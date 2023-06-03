@@ -16,6 +16,8 @@ class Device():
         comString = line.rstrip()
         data = comString.decode().split(":")
 
+        print("DEBUG COMS: " + comString)
+
         if data[0] == "READY" and data[1] == deviceType:
             print(deviceType + " found", end="\r\n")
             self.__thread = threading.Thread(target=self.receiverThread, args=(self.connection, receiver))

@@ -14,9 +14,9 @@ class DataLogger():
     def logEnvironment(self, temp, hum):
 
         log = {
-            'timestamp': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'temp': temp, 
-            'hum': hum
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "temp": temp, 
+            "hum": hum
         }
 
         self.atmosLog.insert(log)
