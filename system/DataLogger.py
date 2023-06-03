@@ -6,7 +6,7 @@ import json
 class DataLogger():
     atmosLog = None
     mqttClient = None
-    def __init__(self, mqttClient):
+    def __init__(self, mqttClient=None):
         self.atmosLog = TinyDB('/home/pi/greenhouse/atmos_db.json')
         self.mqttClient = mqttClient
 
@@ -20,4 +20,4 @@ class DataLogger():
         }
 
         self.atmosLog.insert(log)
-        self.mqttClient.publish( "SENSORS", json.dumps(log))
+        if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))
