@@ -1,5 +1,6 @@
 from paho.mqtt import client as mqtt_client
 import logging
+import time
 
 FIRST_RECONNECT_DELAY = 1
 RECONNECT_RATE = 2
@@ -19,7 +20,8 @@ class MqttClient():
     client = None
 
     def __init__(self):
-        self.init()
+        print("init")
+        self.mqttConnect()
 
     def on_connect(client, userdata, flags, rc):
         if rc == 0:

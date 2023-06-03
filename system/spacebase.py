@@ -54,7 +54,7 @@ stage3 = float(config['windows']['stage_3'])
 stage4 = float(config['windows']['stage_4'])
 
 #MQTT Client
-mqttClient = MqttClient.mqttConnect()
+mqttClient = MqttClient()
 
 
 
