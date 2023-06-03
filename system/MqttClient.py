@@ -11,7 +11,7 @@ username = 'max'
 password = 'public'
 
 class MqttClient():
-    broker = 'homeassistant.local'
+    broker = 'smart.home'
     port = 1883
     baseTopic = "greenhouse/"
     client_id = None
