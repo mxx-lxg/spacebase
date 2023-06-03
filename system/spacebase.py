@@ -19,11 +19,11 @@ from RelayController import Heater
 # set up logging to file
 print("working directory: " + os.getcwd())
 logging.basicConfig(
-     filename='./spacebase.log',
-     level=logging.INFO, 
-     format= '[%(asctime)s] %(name)s: %(levelname)s - %(message)s',
-     datefmt='%d.%m.%Y %H:%M:%S'
- )
+    filename='./spacebase.log',
+    level=logging.INFO, 
+    format= '[%(asctime)s] %(name)s: %(levelname)s - %(message)s',
+    datefmt='%d.%m.%Y %H:%M:%S'
+)
 # set up logging to console
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)
@@ -134,6 +134,13 @@ print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(sta
 
 print("\n getting down to business...")
 
+print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
+    datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    environment.lastTemperature,
+    environment.lastHumidity
+))
+dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
+
 #main Loop
 lastWindowCheck = int(time.time())
 lastClimateUpdate = int(time.time())
@@ -145,10 +152,6 @@ while True:
     currentPass = int(time.time())
     windowInterval = int(config['windows']['check_interval'])
     climateLogInterval = int(config['climate']['log_interval'])
-
-
-
-
 
 #*** Sensoren ****************************************************
 
