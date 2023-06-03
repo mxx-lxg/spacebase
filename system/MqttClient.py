@@ -23,13 +23,13 @@ class MqttClient():
         print("MQTT init")
         self.mqttConnect()
 
-    def on_connect(client, userdata, flags, rc):
+    def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect to MQTT broker, return code %d\n", rc)
 
-    def on_disconnect(client, userdata, rc):
+    def on_disconnect(self, client, userdata, rc):
         print("MQTT Disconnected with result code: %s", rc)
         reconnect_count, reconnect_delay = 0, FIRST_RECONNECT_DELAY
         while reconnect_count < MAX_RECONNECT_COUNT:
@@ -55,11 +55,11 @@ class MqttClient():
         # client.username_pw_set(username, password)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
-        self.client.connect(self.broker, self.port)
+        self.client.connect_async(self.broker, self.port)
         self.client.loop_start()
     
     def publish(self, topic, message):
-        result = self.client.publish(self.baseTopic + topic, message)
+        result = self.client.publish(self.baseTopic + topic, message, 0)
         # result: [0, 1]
         status = result[0]
         if status == 0:

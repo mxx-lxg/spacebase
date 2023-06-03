@@ -89,7 +89,7 @@ print("device init")
 for path in scannedDevices:
     device = scannedDevices[path]
     if device == "windows":
-        windows = Windows(path)
+        windows = Windows(path, mqttClient)
         windows.reset()
     if device == "environment":
         environment = Environment(path)

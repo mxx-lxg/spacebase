@@ -9,9 +9,11 @@ class Windows(Device):
     lastTemperature = 10
     lastHumidity = 10
     logger = logging.getLogger(__name__)
+    mqttClient = None
 
-    def __init__(self, comDir):
+    def __init__(self, comDir, mqttClient):
         Device.__init__(self, comDir, "windows", self.receiver)
+        self.mqttClient = mqttClient
         self.init()
 
     def reset(self):
@@ -43,12 +45,12 @@ class Windows(Device):
         if not(self.locked):
             print("setting windows to stage: " + str(stage), end="\r\n")
             self.sendCommand("STAGE:" + str(stage))
+            self.mqttClient.publish("WINDOWS", stage)
         else:
             print("window position locked. No action. \r\n")
 
     def receiver(self, data):
         if 1 < len(data): data[1] = float(data[1]) # value spalte zu float konvertieren
-
         if data[0] == "MOVING":
             self.moving = data[1]
             if not(self.resetInProgress):
