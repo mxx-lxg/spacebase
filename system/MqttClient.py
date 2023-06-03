@@ -55,7 +55,8 @@ class MqttClient():
         # client.username_pw_set(username, password)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
-        self.client.connect_async(self.broker, self.port)
+        self.client.connect(self.broker, self.port)
+        self.client.loop_start()
     
     def publish(self, topic, message):
         result = self.client.publish(self.baseTopic + topic, message)
@@ -64,4 +65,4 @@ class MqttClient():
         if status == 0:
             print(f"Send to topic `{self.baseTopic + topic}`")
         else:
-            print(f"Failed to send message to topic {self.baseTopic + topic}")
+            print(f"Failed to send message to topic {self.baseTopic + topic} - {status}")
