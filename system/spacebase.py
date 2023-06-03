@@ -10,7 +10,7 @@ import configparser
 import time
 import datetime
 import keyboard
-import MqttClient
+from MqttClient import MqttClient
 from Dashboard import Dashboard
 from RelayController import Heater
 
