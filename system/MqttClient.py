@@ -11,7 +11,7 @@ username = 'max'
 password = 'public'
 
 class MqttClient():
-    broker = 'smart.home'
+    broker = 'homeassistant.local'
     port = 1883
     baseTopic = "greenhouse/"
     client_id = None
@@ -49,7 +49,6 @@ class MqttClient():
         print("MQTT Reconnect failed after %s attempts. Exiting...", reconnect_count)
 
     def mqttConnect(self):
-        print("MQTT connect routine")
         # Set Connecting Client ID
         self.client = mqtt_client.Client(self.client_id)
         self.client.username_pw_set(username, password)

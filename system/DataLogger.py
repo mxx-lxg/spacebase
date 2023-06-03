@@ -20,4 +20,4 @@ class DataLogger():
         }
 
         self.atmosLog.insert(log)
-        self.mqttClient.publish( "log", str(log))
+        self.mqttClient.publish( "SENSORS", str(log))

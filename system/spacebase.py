@@ -134,12 +134,7 @@ print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(sta
 
 print("\n getting down to business...")
 
-print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
-    datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    environment.lastTemperature,
-    environment.lastHumidity
-))
-dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
+mqttClient.publish("STATE", "hello")
 
 #main Loop
 lastWindowCheck = int(time.time())
