@@ -10,8 +10,8 @@ As the name kind of suggests, i got inspired by the spacebucket community. You c
 
 * automated opening and closing of windows, based on temperature, as well as time of day
 * automated irrigation of multiple zones/pots
-* water-reservoir management
-* emergency defrosting
+* water-management
+* frost protection
 * logging and displaying information like soil-moisture, temperature, humidity, sun-exposure and water-usage
 
 ## Basic use
@@ -36,7 +36,7 @@ In the config file temperatures are stated in °Celsius. Time is stated in Secon
 
 ## Hardware modules / Serial API
 
-Most hardware modules provided in this repo are based on Arduinos. When plugged into the control system via USB they should automatically be detected on startup. I will make a detailed documentation for the Serial API available as soon as i get to it, so you can integrate your own hardware.
+Most hardware modules provided in this repo are based on Arduinos and written as PlatformIO projects. When plugged into the control system via USB they should automatically be detected on startup. I will make a detailed documentation for the Serial API available as soon as i get to it, so you can integrate your own hardware.
 
 ## Manual controls
 
@@ -52,23 +52,26 @@ keyboard keys are bound as followes:
 
 `7` toggle heater on/off
 
+## Work-In-Progress / Testing
+
+* automated irrigation and water management 
+
 ## Planned features
 
-* web-based dashboard
-* webcam integration
-* REST-API
+* web-interface
+* E-Ink display support (regular affordable Pi-displays are useless in full sunlight)
 
 ## Far future planned features
 
 * control of energy curtains
 * control of artificial light sources
 * air-circulation and -ventilation
-* geothermal AC
+* geothermal AC (fresh and circulating air)
 * general/modular AC
-* integration into Home Assistant
-* support for multiple greenhouses
+* MQTT support (integration into Home Assistant)
+* support for multiple greenhouses (might become a separate project)
 * some form of robotics-integration to remotely inspect individual plants
-* automated fertilizer application, probably based on soil- and water-acidity.
+* automated fertilizer application
 
 ## License
 
