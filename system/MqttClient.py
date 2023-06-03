@@ -52,7 +52,6 @@ class MqttClient():
         # Set Connecting Client ID
         self.client = mqtt_client.Client(self.client_id)
         self.client.username_pw_set(username, password)
-        # client.username_pw_set(username, password)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.connect_async(self.broker, self.port)
