@@ -1,6 +1,6 @@
 import datetime
 from tinydb import TinyDB, Query
-
+import json
 
 #databases and logging handler
 class DataLogger():
@@ -20,4 +20,4 @@ class DataLogger():
         }
 
         self.atmosLog.insert(log)
-        self.mqttClient.publish( "SENSORS", str(log))
+        self.mqttClient.publish( "SENSORS", json.dumps(log))
