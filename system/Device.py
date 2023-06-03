@@ -16,7 +16,7 @@ class Device():
         comString = line.rstrip()
         data = comString.decode().split(":")
 
-        print("DEBUG COMS: " + comString)
+        print("DEBUG COMS: " + comString.decode())
 
         if data[0] == "READY" and data[1] == deviceType:
             print(deviceType + " found", end="\r\n")

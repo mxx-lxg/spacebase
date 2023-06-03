@@ -14,7 +14,7 @@ class MqttClient():
     broker = 'smart.home'
     port = 1883
     baseTopic = "greenhouse/"
-    client_id = None
+    client_id = "69420"
     logger = logging.getLogger(__name__)
 
     client = None
