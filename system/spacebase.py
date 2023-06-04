@@ -46,7 +46,7 @@ if not os.path.exists(PIPE_PATH):
 
 #Konfiguartion laden oder erstellen
 
-if not exists('~/spacebase/system/spacebase.conf'):
+if not exists(os.getcwd() + '/spacebase.conf'):
     print("No config file found. Writing new config and exiting...")
     
     newConfig = configparser.ConfigParser()
@@ -69,7 +69,7 @@ if not exists('~/spacebase/system/spacebase.conf'):
     newConfig.set('mqtt', 'client_id', '69420')
     newConfig.set('mqtt', 'user', 'max')
     newConfig.set('mqtt', 'pw', 'public')
-    with open('~/spacebase/system/spacebase.conf', 'w+') as configFile:
+    with open(os.getcwd() + '/spacebase.conf', 'x') as configFile:
         newConfig.write(configFile)
         configFile.close()
         sys.exit()
@@ -77,7 +77,7 @@ if not exists('~/spacebase/system/spacebase.conf'):
 
 print("loading config")
 config = configparser.ConfigParser()
-config.read('~/spacebase/system/spacebase.conf')
+config.read(os.getcwd() + '/spacebase.conf')
 heaterStartVal = float(config['climate']['heater_threshold'])
 heaterStopVal = float(config['climate']['heater_stop'])
 stage1 = float(config['windows']['stage_1'])    #TODO in objekt
