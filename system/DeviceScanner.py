@@ -1,5 +1,5 @@
 from os import walk
-import serial
+from serial import Serial
 
 class DeviceScanner():
     def findDevices():
@@ -16,7 +16,7 @@ class DeviceScanner():
             for filename in filtered_filenames:
                 #print("trying " + filename)
                 try:
-                    connection = serial.Serial(port="/dev/" + filename, baudrate=9600, timeout=5)
+                    connection = Serial(port="/dev/" + filename, baudrate=9600, timeout=5)
                     line = connection.readline()
                     comString = line.rstrip()
                     data = comString.decode().split(":")
@@ -28,7 +28,8 @@ class DeviceScanner():
                     
                     connection.close()
                 
-                except:
+                except Exception as e:
+                    print(e)
                     continue
                     #print("\rscanning", end="\r") 
 

@@ -1,6 +1,6 @@
 keyboard
 RPi.GPIO
 paho-mqtt
-serial
+pySerial
 tinydb
 tk_tools
