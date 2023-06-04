@@ -1,13 +1,14 @@
 import datetime
 from tinydb import TinyDB, Query
 import json
+import os
 
 #databases and logging handler
 class DataLogger():
     atmosLog = None
     mqttClient = None
     def __init__(self, mqttClient=None):
-        self.atmosLog = TinyDB('/home/pi/greenhouse/atmos_db.json')
+        self.atmosLog = TinyDB(os.getcwd() + '/atmos_db.json')
         self.mqttClient = mqttClient
 
     #log temperature and humidity
