@@ -7,21 +7,25 @@ RECONNECT_RATE = 2
 MAX_RECONNECT_COUNT = 12
 MAX_RECONNECT_DELAY = 60
 
-username = 'max'
-password = 'public'
-
 class MqttClient():
-    broker = 'smart.home'
-    port = 1883
+    broker = None
+    port = None
     baseTopic = "greenhouse/"
-    client_id = "69420"
+    client_id = None
+    username = None
+    password = None
     logger = logging.getLogger(__name__)
 
     client = None
 
-    def __init__(self):
+    def __init__(self, config):
         print("MQTT init")
         self.mqttConnect()
+        self.broker = config["broker"]
+        self.port = config["port"]
+        self.client_id = config["client_id"]
+        self.username = config["user"]
+        self.password = config["pw"]
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
@@ -52,7 +56,7 @@ class MqttClient():
         # Set Connecting Client ID
         
         self.client = mqtt_client.Client(self.client_id)
-        self.client.username_pw_set(username, password)
+        self.client.username_pw_set(self.username, self.password)
         self.client.on_connect = self.on_connect
         self.client.on_disconnect = self.on_disconnect
         self.client.connect_async(self.broker, self.port)

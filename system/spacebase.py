@@ -10,6 +10,8 @@ import configparser
 import time
 import datetime
 import keyboard
+import sys
+from os.path import exists
 from MqttClient import MqttClient
 from Dashboard import Dashboard
 from RelayController import Heater
@@ -42,7 +44,13 @@ PIPE_PATH = "/tmp/greenhouse_pipe"
 if not os.path.exists(PIPE_PATH):
     os.mkfifo(PIPE_PATH)
 
-#Konfiguartion laden
+#Konfiguartion laden oder erstellen
+
+if not exists('/home/pi/spacebase/system/spacebase.conf'):
+    print("No config file found. Exiting...")
+    sys.exit()
+
+
 print("loading config")
 config = configparser.ConfigParser()
 config.read('/home/pi/spacebase/system/spacebase.conf')
@@ -54,7 +62,7 @@ stage3 = float(config['windows']['stage_3'])
 stage4 = float(config['windows']['stage_4'])
 
 #MQTT Client
-mqttClient = MqttClient()
+mqttClient = MqttClient(config['mqtt'])
 
 
 
