@@ -20,7 +20,7 @@ class MqttClient():
 
     def __init__(self, config):
         self.broker = config["broker"]
-        self.port = config["port"]
+        self.port = int(config["port"])
         self.client_id = config["client_id"]
         self.username = config["user"]
         self.password = config["pw"]
