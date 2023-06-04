@@ -19,13 +19,13 @@ class MqttClient():
     client = None
 
     def __init__(self, config):
-        print("MQTT init")
-        self.mqttConnect()
         self.broker = config["broker"]
         self.port = config["port"]
         self.client_id = config["client_id"]
         self.username = config["user"]
         self.password = config["pw"]
+        print("Connecting to MQTT broker: " + self.broker)
+        self.mqttConnect()
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
