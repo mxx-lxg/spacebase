@@ -69,10 +69,10 @@ if not exists('~/spacebase/system/spacebase.conf'):
     newConfig.set('mqtt', 'client_id', '69420')
     newConfig.set('mqtt', 'user', 'max')
     newConfig.set('mqtt', 'pw', 'public')
-    configFile = open('~/spacebase/system/spacebase.conf', 'x')
-    newConfig.write(configFile)
-    configFile.close()
-    sys.exit()
+    with open('~/spacebase/system/spacebase.conf', 'w+') as configFile:
+        newConfig.write(configFile)
+        configFile.close()
+        sys.exit()
 
 
 print("loading config")
