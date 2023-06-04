@@ -69,7 +69,8 @@ if not exists('/home/pi/spacebase/system/spacebase.conf'):
     newConfig.set('mqtt', 'client_id', '69420')
     newConfig.set('mqtt', 'user', 'max')
     newConfig.set('mqtt', 'pw', 'public')
-
+    with open('/home/pi/spacebase/system/spacebase.conf', 'w') as configfile:
+        newConfig.write(configfile)
     sys.exit()
 
 
