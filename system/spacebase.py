@@ -69,7 +69,7 @@ if not exists('/home/pi/spacebase/system/spacebase.conf'):
     newConfig.set('mqtt', 'client_id', '69420')
     newConfig.set('mqtt', 'user', 'max')
     newConfig.set('mqtt', 'pw', 'public')
-    with open('/home/pi/spacebase/system/spacebase.conf', 'x') as configfile:
+    with open('~/spacebase/system/spacebase.conf', 'x') as configfile:
         newConfig.write(configfile)
         configfile.close()
     sys.exit()
@@ -77,7 +77,7 @@ if not exists('/home/pi/spacebase/system/spacebase.conf'):
 
 print("loading config")
 config = configparser.ConfigParser()
-config.read('/home/pi/spacebase/system/spacebase.conf')
+config.read('~/spacebase/system/spacebase.conf')
 heaterStartVal = float(config['climate']['heater_threshold'])
 heaterStopVal = float(config['climate']['heater_stop'])
 stage1 = float(config['windows']['stage_1'])    #TODO in objekt
