@@ -46,7 +46,7 @@ if not os.path.exists(PIPE_PATH):
 
 #Konfiguartion laden oder erstellen
 
-if not exists('/home/pi/spacebase/system/spacebase.conf'):
+if not exists('~/spacebase/system/spacebase.conf'):
     print("No config file found. Writing new config and exiting...")
     
     newConfig = configparser.ConfigParser()
@@ -69,9 +69,9 @@ if not exists('/home/pi/spacebase/system/spacebase.conf'):
     newConfig.set('mqtt', 'client_id', '69420')
     newConfig.set('mqtt', 'user', 'max')
     newConfig.set('mqtt', 'pw', 'public')
-    with open('~/spacebase/system/spacebase.conf', 'x') as configfile:
-        newConfig.write(configfile)
-        configfile.close()
+    configFile = open('~/spacebase/system/spacebase.conf', 'x')
+    newConfig.write(configFile)
+    configFile.close()
     sys.exit()
 
 
