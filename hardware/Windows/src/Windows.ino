@@ -1,19 +1,27 @@
 #include <Arduino.h>
 
+#include "AFMotor.h"
+
 int incomingByte = 0;    // for incoming serial data
 int windowsOpen = 0;
 int moveDuration = 12; //Zeit, die das Fenster zum Bewegen braucht, in Sekunden (11s für Motoren)
 bool isInitialized = false;
 
+AF_DCMotor window1(1);
+AF_DCMotor window2(2);
+AF_DCMotor window3(3);
+AF_DCMotor window4(4);
+
 void setup() {
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
+  window1.setSpeed(255);
+  window1.run(RELEASE);
+  window2.setSpeed(255);
+  window2.run(RELEASE);
+  window3.setSpeed(255);
+  window3.run(RELEASE);
+  window4.setSpeed(255);
+  window4.run(RELEASE);
+
   Serial.begin(9600);  
   Serial.println("READY:windows");
 }
@@ -78,64 +86,64 @@ void setWindows(int stage) {
 }
 
 void closeWindow(int window) {
-  int channel = 0;
   switch (window) {
     case 1:
-      channel = 3;
+      window1.run(BACKWARD);
+      delay(moveDuration * 1000);
+      window1.run(RELEASE);
+      delay(200);
       break;
     case 2:
-      channel = 5;
+      window2.run(BACKWARD);
+      delay(moveDuration * 1000);
+      window2.run(RELEASE);
+      delay(200);
       break;
     case 3:
-      channel = 7;
+      window3.run(BACKWARD);
+      delay(moveDuration * 1000);
+      window3.run(RELEASE);
+      delay(200);
       break;
     case 4:
-      channel = 9;
+      window4.run(BACKWARD);
+      delay(moveDuration * 1000);
+      window4.run(RELEASE);
+      delay(200);
       break;
   }
-
-  //Ablaufblock
-  digitalWrite(channel, HIGH);
-  delay(moveDuration * 1000);
-  digitalWrite(channel, LOW);
-  delay(500);
-  //Ablaufblock Ende
 }
 
 void openWindow(int window) {
-  int channel = 0;
   switch (window) {
     case 1:
-      channel = 4;
+      window1.run(FORWARD);
+      delay(moveDuration * 1000);
+      window1.run(RELEASE);
+      delay(200);
       break;
     case 2:
-      channel = 6;
+      window2.run(FORWARD);
+      delay(moveDuration * 1000);
+      window2.run(RELEASE);
+      delay(200);
       break;
     case 3:
-      channel = 8;
+      window3.run(FORWARD);
+      delay(moveDuration * 1000);
+      window3.run(RELEASE);
+      delay(200);
       break;
     case 4:
-      channel = 10;
+      window4.run(FORWARD);
+      delay(moveDuration * 1000);
+      window4.run(RELEASE);
+      delay(200);
       break;
   }
-
-  //Ablaufblock
-  digitalWrite(channel, HIGH);
-  delay(moveDuration * 1000);
-  digitalWrite(channel, LOW);
-  delay(200);
-  //Ablaufblock Ende
 }
 
 void resetWindows() {
-  digitalWrite(3, LOW);
-  digitalWrite(4, LOW);
-  digitalWrite(5, LOW);
-  digitalWrite(6, LOW);
-  digitalWrite(7, LOW);
-  digitalWrite(8, LOW);
-  digitalWrite(9, LOW);
-  digitalWrite(10, LOW);
   delay(1000);
   
   Serial.println("MOVING:1");
@@ -157,16 +165,16 @@ void resetWindows() {
 }
 
 String getValue(String data, char separator, int index){
-        int found = 0;
-        int strIndex[] = { 0, -1 };
-        int maxIndex = data.length() - 1;
+    int found = 0;
+    int strIndex[] = { 0, -1 };
+    int maxIndex = data.length() - 1;
 
-        for (int i = 0; i <= maxIndex && found <= index; i++) {
-            if (data.charAt(i) == separator || i == maxIndex) {
-                found++;
-                strIndex[0] = strIndex[1] + 1;
-                strIndex[1] = (i == maxIndex) ? i+1 : i;
-            }
+    for (int i = 0; i <= maxIndex && found <= index; i++) {
+        if (data.charAt(i) == separator || i == maxIndex) {
+            found++;
+            strIndex[0] = strIndex[1] + 1;
+            strIndex[1] = (i == maxIndex) ? i+1 : i;
         }
-        return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
     }
+    return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
+}

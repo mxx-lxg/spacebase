@@ -22,3 +22,14 @@ class DataLogger():
 
         self.atmosLog.insert(log)
         if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))
+
+    #log irrigation status
+    def logIrrigation(self, rainwater):
+
+        log = {
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "rainwater": rainwater
+        }
+
+        self.atmosLog.insert(log)
+        if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))

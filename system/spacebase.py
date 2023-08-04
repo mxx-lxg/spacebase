@@ -169,6 +169,7 @@ print("\n getting down to business...")
 if mqttClient: mqttClient.publish("STATE", "hello")
 
 #main Loop
+#TODO durch scheduler ersetzen
 lastWindowCheck = int(time.time())
 lastClimateUpdate = int(time.time())
 lastMoistureUpdate = int(time.time())
@@ -191,6 +192,16 @@ while True:
             environment.lastHumidity
         ))
         dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
+        #lastClimateUpdate = currentPass
+
+    #Bewässerung
+    if irrigation and currentPass >= lastClimateUpdate + climateLogInterval:
+        #Klimadaten speichern
+        print("{0} | rainwater level: {1} % - logged \r".format(
+            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            irrigation.rainWaterLevel
+        ))
+        dataLogger.logIrrigation(irrigation.rainWaterLevel)
         lastClimateUpdate = currentPass
 
     #Bodenfeuchtigkeit

@@ -36,6 +36,9 @@ class Irrigation(Device):
         self.sendCommand("BUFFER")
 
     def receiver(self, data):
+        if data[0] == "RAINLEVEL":
+            self.rainWaterLevel=int(data[1])
+
         if data[0] == "REFBEGIN":
             self.bufferRefillInProgress=True
 
