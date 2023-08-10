@@ -173,6 +173,7 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 
 
 #main Loop
+heatingInProgress = False
 
 def environmentReport():
     #Klimadaten speichern
@@ -251,8 +252,6 @@ if windows:
     schedule.every(int(config['climate']['log_interval'])).minutes.do(adjustWindows)
 
 
-
-heatingInProgress = False
 while True:
     schedule.run_pending()
     time.sleep(1)
