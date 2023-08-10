@@ -15,6 +15,7 @@ from os.path import exists
 from MqttClient import MqttClient
 from Dashboard import Dashboard
 from RelayController import Heater
+import schedule
 
 
 #log setup
@@ -122,7 +123,7 @@ for path in scannedDevices:
     device = scannedDevices[path]
     if device == "windows":
         windows = Windows(path, mqttClient)
-        windows.reset()
+        windows.init()
     if device == "environment":
         environment = Environment(path)
         environment.init()
@@ -168,76 +169,37 @@ print("\n getting down to business...")
 
 if mqttClient: mqttClient.publish("STATE", "hello")
 
+
+
+
 #main Loop
-#TODO durch scheduler ersetzen
-lastWindowCheck = int(time.time())
-lastClimateUpdate = int(time.time())
-lastMoistureUpdate = int(time.time())
-lastPass = int(time.time())
-heatingInProgress = False
 
-while True:
-    currentPass = int(time.time())
-    windowInterval = int(config['windows']['check_interval'])
-    climateLogInterval = int(config['climate']['log_interval'])
+def environmentReport():
+    #Klimadaten speichern
+    print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        environment.lastTemperature,
+        environment.lastHumidity
+    ))
+    dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
 
-#*** Sensoren ****************************************************
+def irrigationReport():
+    #Klimadaten speichern
+    print("{0} | rainwater level: {1} % - logged \r".format(
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        irrigation.rainWaterLevel
+    ))
+    dataLogger.logIrrigation(irrigation.rainWaterLevel)
 
-    #Klima
-    if environment and currentPass >= lastClimateUpdate + climateLogInterval:
-        #Klimadaten speichern
-        print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
+def moistureReport():
+    #Bodenfeuchtigkeit speichern
+    for patch in moisture:
+        print("{0} | patch {1} moisture: {2} % - logged \r".format(
             datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            environment.lastTemperature,
-            environment.lastHumidity
+            patch.patchId,
+            patch.lastMoisture
         ))
-        dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
-        #lastClimateUpdate = currentPass
-
-    #Bewässerung
-    if irrigation and currentPass >= lastClimateUpdate + climateLogInterval:
-        #Klimadaten speichern
-        print("{0} | rainwater level: {1} % - logged \r".format(
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            irrigation.rainWaterLevel
-        ))
-        dataLogger.logIrrigation(irrigation.rainWaterLevel)
-        lastClimateUpdate = currentPass
-
-    #Bodenfeuchtigkeit
-    if moisture and currentPass >= lastMoistureUpdate + climateLogInterval:
-        #Bodenfeuchtigkeit speichern
-        for patch in moisture:
-            print("{0} | patch {1} moisture: {2} % - logged \r".format(
-                datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                patch.patchId,
-                patch.lastMoisture
-            ))
-        #TODO moisture logging
-        lastMoistureUpdate = currentPass
-
-
-
-
-
-#*** Controller ****************************************************
-
-    #Fenster
-    if windows and environment and currentPass >= lastWindowCheck + windowInterval:
-        
-        if environment.lastTemperature >= stage4: 
-            windows.setToStage(4)
-        elif environment.lastTemperature >= stage3: 
-            windows.setToStage(3)
-        elif environment.lastTemperature >= stage2: 
-            windows.setToStage(2)
-        elif environment.lastTemperature >= stage1: 
-            windows.setToStage(1)
-        else:
-            windows.setToStage(0)
-    
-        lastWindowCheck = currentPass
-
+    #TODO moisture logging
     #Bewässerung
     #1 mal morgens
         #Bewässerung unabhängig von Feuchtigkeit
@@ -245,48 +207,51 @@ while True:
         #Liste der beete durchgehen und für jedes Moisture Sensor abfragen
         #Wenn unter Grenze Bewässerung aktivieren
 
+def adjustWindows():
+    #Fenster einstellen
+    if environment.lastTemperature >= stage4: 
+        windows.setToStage(4)
+    elif environment.lastTemperature >= stage3: 
+        windows.setToStage(3)
+    elif environment.lastTemperature >= stage2: 
+        windows.setToStage(2)
+    elif environment.lastTemperature >= stage1: 
+        windows.setToStage(1)
+    else:
+        windows.setToStage(0)
+
+def frostProtection():
+    #Frostschutz Heizung
+    if not heatingInProgress:
+        if environment.lastTemperature <= heaterStartVal: 
+            heater.heaterOn()
+            heatingInProgress = True
+            logger.warning("below frost threshold: " + str(environment.lastTemperature))
+            print("starting defrost")
+    else: 
+        if environment.lastTemperature >= heaterStopVal: 
+            heater.heaterOff()
+            heatingInProgress = False
+            print("stopping defrost")
+
+
+#Jobs anlegen
+if environment:
+    schedule.every(config['climate']['log_interval']).minutes.do(environmentReport)
+    schedule.every(1).seconds.do(frostProtection)
+
+if irrigation:
+    schedule.every(config['climate']['log_interval']).minutes.do(irrigationReport)
+
+if moisture:
+    schedule.every(config['climate']['log_interval']).minutes.do(moistureReport)
+
+if windows:
+    windows.reset()
+    schedule.every(config['climate']['log_interval']).minutes.do(adjustWindows)
 
 
 
-    
-#*** Sekundentakt ****************************************************
-    if currentPass >= lastPass + 1 and environment:
-        #Sensordaten holen
-        environment.getAtmospherics()
-
-        #Dashboard aktualisieren
-        #dashboard.set(environment.lastTemperature, environment.lastHumidity, windows.currentStage)
-
-        #Frostschutz Heizung
-        if not heatingInProgress:
-            if environment.lastTemperature <= heaterStartVal: 
-                heater.heaterOn()
-                heatingInProgress = True
-                logger.warning("below frost threshold: " + str(environment.lastTemperature))
-                print("start heating up")
-        else: 
-            if environment.lastTemperature >= heaterStopVal: 
-                heater.heaterOff()
-                heatingInProgress = False
-                print("stop heating up")
-
-
-
-        #Monitor Pipe
-        #moveIllustration = ""
-        #for i in range(4):
-        #    if i+1 == windows.moving:
-        #        moveIllustration = moveIllustration + "▄"
-        #    elif i+1 <= windows.currentStage:
-        #        moveIllustration = moveIllustration + "█"
-        #    else:
-        #        moveIllustration = moveIllustration + "-"
-    
-        #with open(PIPE_PATH, "w") as p:
-        #    p.write("{0} | Temperatur: {1} °C | Humidity: {2} % | {3} \r".format(
-        #        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        #        windows.lastTemperature,
-        #        windows.lastHumidity,
-        #        moveIllustration
-        #    ))
-        lastPass = currentPass
+while True:
+    schedule.run_pending()
+    time.sleep(1)
