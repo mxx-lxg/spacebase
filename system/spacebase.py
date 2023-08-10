@@ -223,6 +223,7 @@ def adjustWindows():
 
 def frostProtection():
     #Frostschutz Heizung
+    global heatingInProgress
     if not heatingInProgress:
         if environment.lastTemperature <= heaterStartVal: 
             heater.heaterOn()
