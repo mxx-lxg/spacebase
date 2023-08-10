@@ -237,18 +237,18 @@ def frostProtection():
 
 #Jobs anlegen
 if environment:
-    schedule.every(config['climate']['log_interval']).minutes.do(environmentReport)
+    schedule.every(int(config['climate']['log_interval'])).minutes.do(environmentReport)
     schedule.every(1).seconds.do(frostProtection)
 
 if irrigation:
-    schedule.every(config['climate']['log_interval']).minutes.do(irrigationReport)
+    schedule.every(int(config['climate']['log_interval'])).minutes.do(irrigationReport)
 
 if moisture:
-    schedule.every(config['climate']['log_interval']).minutes.do(moistureReport)
+    schedule.every(int(config['climate']['log_interval'])).minutes.do(moistureReport)
 
 if windows:
     windows.reset()
-    schedule.every(config['climate']['log_interval']).minutes.do(adjustWindows)
+    schedule.every(int(config['climate']['log_interval'])).minutes.do(adjustWindows)
 
 
 
