@@ -126,7 +126,7 @@ for path in scannedDevices:
     if device == "environment":
         environment = Environment(path)
         environment.init()
-    if device == "irrigation":
+    if device == "water":
         irrigation = Irrigation(path)
         irrigation.init()
     if device == "moisture":
