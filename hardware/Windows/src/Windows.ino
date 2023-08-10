@@ -4,7 +4,7 @@
 
 int incomingByte = 0;    // for incoming serial data
 int windowsOpen = 0;
-int moveDuration = 12; //Zeit, die das Fenster zum Bewegen braucht, in Sekunden (11s für Motoren)
+int moveDuration = 13; //Zeit, die das Fenster zum Bewegen braucht, in Sekunden (11s für Motoren)
 bool isInitialized = false;
 
 AF_DCMotor window1(1);

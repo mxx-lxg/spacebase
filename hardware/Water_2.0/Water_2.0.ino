@@ -1,18 +1,43 @@
+#include <Adafruit_SSD1306.h>
 
-bool isInitialized = false;
 // Define Trig and Echo pin:
 #define trigPin 12
 #define echoPin 13
 
-#define FULL_VAL 25
-#define EMPTY_VAL 100
+#define FULL_VAL 20
+#define EMPTY_VAL 70
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+bool isInitialized = false;
+int currentLevel = 0;
 
 void setup() {
   pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  pinMode(echoPin, INPUT_PULLUP);
   pinMode(2, OUTPUT);
   Serial.begin(9600);
   Serial.println("READY:water");
+
+
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);
+  }
+  delay(1000);
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 10);
+  // Display static text
+  display.println("SpaceBase Regenwasser");
+  display.display(); 
+  display.setRotation(1);
+  delay(1000);
 }
 
 void loop() {
@@ -42,9 +67,13 @@ void loop() {
     }
     
     if(command == "RAIN"){
-      getLevel();
+      reportLevel();
     }
   }
+
+  currentLevel = getLevel();
+  displayStatus(currentLevel);
+  delay(100);
 }
 
 //coole splitter klasse
@@ -64,31 +93,43 @@ String getValue(String data, char separator, int index)
     return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
-void getLevel(){
-    // Clear the trigPin by setting it LOW:
-  digitalWrite(trigPin, LOW);
-  
-  delayMicroseconds(10);
+int getDistance(){
+      // Clear the trigPin by setting it LOW:
+    digitalWrite(trigPin, LOW);
+    
+    delayMicroseconds(10);
 
- // Trigger the sensor by setting the trigPin high for 10 microseconds:
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(20);
-  digitalWrite(trigPin, LOW);
-  
-  // Read the echoPin. pulseIn() returns the duration (length of the pulse) in microseconds:
-  int duration = pulseIn(echoPin, HIGH);
-  
-  // Calculate the distance:
-  int distance = duration*0.034/2;
-  
-  // Print the distance on the Serial Monitor (Ctrl+Shift+M):
+  // Trigger the sensor by setting the trigPin high for 10 microseconds:
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(20);
+    digitalWrite(trigPin, LOW);
+    
+    // Read the echoPin. pulseIn() returns the duration (length of the pulse) in microseconds:
+    int duration = pulseIn(echoPin, HIGH);
+    
+    // Calculate the distance:
+    int distance = duration*0.034/2;
 
-  int relativeValue = constrain(map(distance, FULL_VAL, 100, EMPTY_VAL, 0), 0, 100);
+    delayMicroseconds(10);
 
+    return distance;
+}
+
+int getLevel(){
+  int distance = getDistance();
+  /*display.setTextSize(1);
+  display.setCursor(25, display.height()-30);
+  display.print("raw ");
+  display.println(distance);
+  display.display();*/
+  return constrain(map(distance, FULL_VAL, EMPTY_VAL, 100, 0), 0, 100);
+}
+
+void reportLevel(){
   Serial.print("RAINLEVEL:");
   //Serial.print(distance);
   //Serial.print("_");
-  Serial.println(relativeValue);
+  Serial.println(currentLevel);
 }
 
 void openValve(int valve){
@@ -114,3 +155,28 @@ void toggleValve(int valve, int state){
     }
     digitalWrite(vId, state);
 }
+
+
+void displayStatus(int level){
+  
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+
+  display.setTextSize(1);
+  display.setCursor(25, display.height()-10);
+  if(!isInitialized) {
+    display.println("no con!");
+  }
+
+  int displayLevel = map(level, 0, 100, display.height(), 0);
+
+  display.drawRect(0, 0, 21, display.height(), WHITE);
+  display.fillRect(0, displayLevel, 21, display.height(), WHITE);
+
+  display.setTextSize(2);
+  display.setCursor(23, level >=15 ? displayLevel : display.height()-15);
+  display.print(level);
+  display.println("%");
+
+  display.display(); 
+} 
