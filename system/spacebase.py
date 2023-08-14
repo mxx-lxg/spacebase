@@ -122,7 +122,6 @@ for path in scannedDevices:
     device = scannedDevices[path]
     if device == "windows":
         windows = Windows(path, mqttClient)
-        windows.reset()
     if device == "environment":
         environment = Environment(path)
         environment.init()
@@ -168,6 +167,10 @@ print("\n getting down to business...")
 
 if mqttClient: mqttClient.publish("STATE", "hello")
 
+
+if windows:
+        windows.reset()
+        
 #main Loop
 #TODO durch scheduler ersetzen
 lastWindowCheck = int(time.time())

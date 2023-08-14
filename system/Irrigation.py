@@ -45,9 +45,6 @@ class Irrigation(Device):
 
         if data[0] == "REFEND":
             self.bufferRefillInProgress=False
-        
-        if data[0] == "RAIN":
-            self.rainWaterLevel = float(data[1])
             
         if data[0] == "OPENED":
             print("Valve Open: " + str(data[1]), end="\r\n")
