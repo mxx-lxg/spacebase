@@ -236,6 +236,8 @@ def frostProtection():
             heatingInProgress = False
             print("stopping defrost")
 
+def heartbeat():
+    print(".")
 
 #Jobs anlegen
 if environment:
@@ -250,8 +252,7 @@ if moisture:
 
 if windows:
     windows.reset()
-    schedule.every(int(config['climate']['log_interval'])).minutes.do(adjustWindows)
-
+    schedule.every(int(config['windows']['check_interval'])).minutes.do(adjustWindows)
 
 while True:
     schedule.run_pending()
