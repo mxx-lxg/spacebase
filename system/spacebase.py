@@ -170,7 +170,7 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 
 if windows:
         windows.reset()
-        
+
 #main Loop
 #TODO durch scheduler ersetzen
 lastWindowCheck = int(time.time())
@@ -199,6 +199,7 @@ while True:
 
     #Bewässerung
     if irrigation and currentPass >= lastClimateUpdate + climateLogInterval:
+        irrigation.getRainWaterLevel()
         #Klimadaten speichern
         print("{0} | rainwater level: {1} % - logged \r".format(
             datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
