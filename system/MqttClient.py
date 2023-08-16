@@ -30,11 +30,14 @@ class MqttClient():
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
+            self.logger.info("connected to MQTT broker")
         else:
+            self.logger.info("failed to connect to MQTT broker, return code %d\n")
             print("Failed to connect to MQTT broker, return code %d\n", rc)
 
     def on_disconnect(self, client, userdata, rc):
         print("MQTT Disconnected with result code: %s", rc)
+        self.logger.info("MQTT Disconnected with result code: %s")
         reconnect_count, reconnect_delay = 0, FIRST_RECONNECT_DELAY
         while reconnect_count < MAX_RECONNECT_COUNT:
             print("MQTT Reconnecting in %d seconds...", reconnect_delay)
@@ -42,6 +45,7 @@ class MqttClient():
 
             try:
                 client.reconnect()
+                self.logger.info("reconnected to MQTT broker successfully")
                 print("Reconnected to MQTT broker successfully!")
                 return
             except Exception as err:
@@ -68,6 +72,8 @@ class MqttClient():
         # result: [0, 1]
         status = result[0]
         if status == 0:
-            print(f"Send to topic `{self.baseTopic + topic}`")
+            self.logger.info(f"send to topic `{self.baseTopic + topic}`")
+            #print(f"Send to topic `{self.baseTopic + topic}`")
         else:
-            print(f"Failed to send message to topic {self.baseTopic + topic} - {status}")
+            self.logger.info(f"failed to send message to topic {self.baseTopic + topic} - {status}")
+            #print(f"Failed to send message to topic {self.baseTopic + topic} - {status}")

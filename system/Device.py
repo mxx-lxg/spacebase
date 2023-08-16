@@ -2,12 +2,14 @@ import serial
 import threading
 import sys
 import random
+import logging
 
 # Standartklasse für USB-Geräte
 # benötigt: comDir, deviceType, receiver
 
 class Device():
     __thread = False
+    logger = logging.getLogger(__name__)
 
     def __init__(self, comDir, deviceType, receiver):
         self.connection = serial.Serial(comDir, 9600)
@@ -20,10 +22,12 @@ class Device():
 
         if data[0] == "READY" and data[1] == deviceType:
             print(deviceType + " found", end="\r\n")
+            self.logger.info(deviceType + " found")
             self.__thread = threading.Thread(target=self.receiverThread, args=(self.connection, receiver))
             self.__thread.start()
         else:
-            sys.exit('no connected device')
+            self.logger.info("no devices connected")
+            sys.exit("no devices connected")
         
     #Daten von Gerät empfangen und an Receiver Methode übergeben
     def receiverThread(self, ser, receiver):
