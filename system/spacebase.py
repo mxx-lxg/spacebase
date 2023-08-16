@@ -21,7 +21,7 @@ from RelayController import Heater
 # set up logging to file
 print("working directory: " + os.getcwd())
 logging.basicConfig(
-    filename='./spacebase.log',
+    filename= os.getcwd() + '/spacebase.log',
     level=logging.INFO, 
     format= '[%(asctime)s] %(name)s: %(levelname)s - %(message)s',
     datefmt='%d.%m.%Y %H:%M:%S'
