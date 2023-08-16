@@ -43,6 +43,7 @@ class Windows(Device):
         
     def setToStage(self, stage):
         if not(self.locked):
+            self.logger.info("setting windows to stage: " + str(stage))
             print("setting windows to stage: " + str(stage), end="\r\n")
             self.sendCommand("STAGE:" + str(stage))
             if self.mqttClient: self.mqttClient.publish("WINDOWS", stage)
@@ -82,6 +83,7 @@ class Windows(Device):
             self.currentStage = data[1]
             self.moving = None
             print("finished adjusting windows")
+            self.logger.info("finished adjusting windows")
 
 
         if data[0] == "RESETFIN":
@@ -89,3 +91,4 @@ class Windows(Device):
             self.moving = None
             self.resetInProgress = False
             print("finished resetting windows")
+            self.logger.info("finished resetting windows")

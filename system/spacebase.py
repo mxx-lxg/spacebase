@@ -28,7 +28,7 @@ logging.basicConfig(
 )
 # set up logging to console
 console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
+console.setLevel(logging.ERROR)
 # set a format which is simpler for console use
 formatter = logging.Formatter('[%(asctime)s] %(name)s: %(levelname)s %(message)s')
 console.setFormatter(formatter)
@@ -36,7 +36,7 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 logger = logging.getLogger(__name__)
 
-
+logger.info("startup")
 
 #monitoring pipe
 #TODO piping in einem Datenformat für externes Dashboard programm
