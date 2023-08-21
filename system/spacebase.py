@@ -109,6 +109,7 @@ keyboard.add_hotkey('2', lambda: windows.forceOpened())
 keyboard.add_hotkey('3', lambda: windows.unforce())
 keyboard.add_hotkey('4', lambda: windows.reset())
 keyboard.add_hotkey('7', lambda: heater.heaterToggle())
+keyboard.add_hotkey('8', lambda: pump.pumpToggle())
 #keyboard.add_hotkey('8', lambda: heater.heaterOn())
 #keyboard.add_hotkey('9', lambda: heater.heaterOff())
 
@@ -204,6 +205,8 @@ def irrigationReport():
 
 def irrigateAll():
     global irrigation
+    global pump
+
     irrigation.getRainWaterLevel()
     time.sleep(1)
     if irrigation.rainWaterLevel > 30:
@@ -278,6 +281,7 @@ if environment:
 if irrigation:
     irrigation.getRainWaterLevel()
     schedule.every(int(config['climate']['log_interval'])).seconds.do(irrigationReport)
+    schedule.every().day.at("8:30").do(irrigateAll)
 
 if moisture:
     schedule.every(int(config['climate']['log_interval'])).seconds.do(moistureReport)
