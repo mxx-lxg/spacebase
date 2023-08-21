@@ -170,12 +170,8 @@ print("\n getting down to business...")
 
 if mqttClient: mqttClient.publish("STATE", "hello")
 
-
-if windows: 
-    if sys.argv[1] is not None and sys.argv[1] == "no-window-reset":
-        print("no window reset")
-    else:
-        windows.reset()
+if windows:
+    windows.reset()
 
 #main Loop
 #TODO durch scheduler ersetzen
