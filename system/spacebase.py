@@ -22,14 +22,14 @@ import schedule
 # set up logging to file
 print("working directory: " + os.getcwd())
 logging.basicConfig(
-    filename='./spacebase.log',
+    filename= os.getcwd() + '/spacebase.log',
     level=logging.INFO, 
     format= '[%(asctime)s] %(name)s: %(levelname)s - %(message)s',
     datefmt='%d.%m.%Y %H:%M:%S'
 )
 # set up logging to console
 console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
+console.setLevel(logging.ERROR)
 # set a format which is simpler for console use
 formatter = logging.Formatter('[%(asctime)s] %(name)s: %(levelname)s %(message)s')
 console.setFormatter(formatter)
@@ -37,7 +37,7 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 logger = logging.getLogger(__name__)
 
-
+logger.info("startup")
 
 #monitoring pipe
 #TODO piping in einem Datenformat für externes Dashboard programm
@@ -81,6 +81,9 @@ config = configparser.ConfigParser()
 config.read(os.getcwd() + '/spacebase.conf')
 heaterStartVal = float(config['climate']['heater_threshold'])
 heaterStopVal = float(config['climate']['heater_stop'])
+
+irrigationVal = float(config['irrigation']['left_threshold'])
+
 stage1 = float(config['windows']['stage_1'])    #TODO in objekt
 stage2 = float(config['windows']['stage_2'])
 stage3 = float(config['windows']['stage_3'])
@@ -123,7 +126,6 @@ for path in scannedDevices:
     device = scannedDevices[path]
     if device == "windows":
         windows = Windows(path, mqttClient)
-        windows.init()
     if device == "environment":
         environment = Environment(path)
         environment.init()
@@ -170,7 +172,11 @@ print("\n getting down to business...")
 if mqttClient: mqttClient.publish("STATE", "hello")
 
 
-
+if windows: 
+    if sys.argv[1] is not None and sys.argv[1] == "no-window-reset":
+        print("no window reset")
+    else:
+        windows.reset()
 
 #main Loop
 heatingInProgress = False

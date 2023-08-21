@@ -36,17 +36,15 @@ class Irrigation(Device):
         self.sendCommand("BUFFER")
 
     def receiver(self, data):
+        if 1 < len(data): data[1] = float(data[1])
         if data[0] == "RAINLEVEL":
-            self.rainWaterLevel=int(data[1])
+            self.rainWaterLevel=data[1]
 
         if data[0] == "REFBEGIN":
             self.bufferRefillInProgress=True
 
         if data[0] == "REFEND":
             self.bufferRefillInProgress=False
-        
-        if data[0] == "RAIN":
-            self.rainWaterLevel = float(data[1])
             
         if data[0] == "OPENED":
             print("Valve Open: " + str(data[1]), end="\r\n")
