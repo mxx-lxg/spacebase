@@ -204,16 +204,19 @@ def irrigationReport():
 
 def irrigateAll():
     global irrigation
-
+    irrigation.getRainWaterLevel()
+    time.sleep(1)
     if irrigation.rainWaterLevel > 30:
         startLevel = irrigation.rainWaterLevel
         print("starting irrigation...")
         pump.pumpOn()
-        while irrigation.rainWaterLevel >= startLevel - 10: #TODO config value
+        while irrigation.rainWaterLevel >= startLevel - 10: #TODO config value  
+            irrigation.getRainWaterLevel()
             time.sleep(1)
             print(".")
         pump.pumpOff()
         print("irrigation complete")
+    print("not enough water!")
 
 def moistureReport():
     #Bodenfeuchtigkeit speichern
@@ -273,6 +276,7 @@ if environment:
     schedule.every(1).seconds.do(frostProtection)
 
 if irrigation:
+    irrigation.getRainWaterLevel()
     schedule.every(int(config['climate']['log_interval'])).seconds.do(irrigationReport)
 
 if moisture:
