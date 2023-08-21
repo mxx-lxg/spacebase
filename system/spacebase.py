@@ -80,6 +80,9 @@ config = configparser.ConfigParser()
 config.read(os.getcwd() + '/spacebase.conf')
 heaterStartVal = float(config['climate']['heater_threshold'])
 heaterStopVal = float(config['climate']['heater_stop'])
+
+irrigationVal = float(config['irrigation']['left_threshold'])
+
 stage1 = float(config['windows']['stage_1'])    #TODO in objekt
 stage2 = float(config['windows']['stage_2'])
 stage3 = float(config['windows']['stage_3'])
@@ -257,43 +260,23 @@ while True:
 
     
 #*** Sekundentakt ****************************************************
-    if currentPass >= lastPass + 1 and environment:
-        #Sensordaten holen
-        environment.getAtmospherics()
+    if currentPass >= lastPass + 1:
 
-        #Dashboard aktualisieren
-        #dashboard.set(environment.lastTemperature, environment.lastHumidity, windows.currentStage)
+        if environment:
+            #Sensordaten holen
+            environment.getAtmospherics()
 
-        #Frostschutz Heizung
-        if not heatingInProgress:
-            if environment.lastTemperature <= heaterStartVal: 
-                heater.heaterOn()
-                heatingInProgress = True
-                logger.warning("below frost threshold: " + str(environment.lastTemperature))
-                print("start heating up")
-        else: 
-            if environment.lastTemperature >= heaterStopVal: 
-                heater.heaterOff()
-                heatingInProgress = False
-                print("stop heating up")
-
-
-
-        #Monitor Pipe
-        #moveIllustration = ""
-        #for i in range(4):
-        #    if i+1 == windows.moving:
-        #        moveIllustration = moveIllustration + "▄"
-        #    elif i+1 <= windows.currentStage:
-        #        moveIllustration = moveIllustration + "█"
-        #    else:
-        #        moveIllustration = moveIllustration + "-"
-    
-        #with open(PIPE_PATH, "w") as p:
-        #    p.write("{0} | Temperatur: {1} °C | Humidity: {2} % | {3} \r".format(
-        #        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        #        windows.lastTemperature,
-        #        windows.lastHumidity,
-        #        moveIllustration
-        #    ))
+            #Frostschutz Heizung
+            if not heatingInProgress:
+                if environment.lastTemperature <= heaterStartVal: 
+                    heater.heaterOn()
+                    heatingInProgress = True
+                    logger.warning("below frost threshold: " + str(environment.lastTemperature))
+                    print("start heating up")
+            else: 
+                if environment.lastTemperature >= heaterStopVal: 
+                    heater.heaterOff()
+                    heatingInProgress = False
+                    print("stop heating up")
+                    
         lastPass = currentPass
