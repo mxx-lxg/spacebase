@@ -14,7 +14,7 @@ import sys
 from os.path import exists
 from MqttClient import MqttClient
 from Dashboard import Dashboard
-from RelayController import Heater
+from RelayController import Heater, Pump
 import schedule
 
 
@@ -100,6 +100,7 @@ dataLogger = DataLogger(mqttClient)
 
 #GPIO
 heater = Heater()
+pump = Pump()
 
 #keypresses
 print("keyboard setup")
@@ -183,6 +184,8 @@ heatingInProgress = False
 
 def environmentReport():
     #Klimadaten speichern
+    global environment
+    global dataLogger
     print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
         datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         environment.lastTemperature,
@@ -191,12 +194,26 @@ def environmentReport():
     dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
 
 def irrigationReport():
-    #Klimadaten speichern
+    global irrigation
+    global dataLogger
     print("{0} | rainwater level: {1} % - logged \r".format(
         datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         irrigation.rainWaterLevel
     ))
     dataLogger.logIrrigation(irrigation.rainWaterLevel)
+
+def irrigateAll():
+    global irrigation
+
+    if irrigation.rainWaterLevel > 30:
+        startLevel = irrigation.rainWaterLevel
+        print("starting irrigation...")
+        pump.pumpOn()
+        while irrigation.rainWaterLevel >= startLevel - 10: #TODO config value
+            time.sleep(1)
+            print(".")
+        pump.pumpOff()
+        print("irrigation complete")
 
 def moistureReport():
     #Bodenfeuchtigkeit speichern
@@ -216,6 +233,8 @@ def moistureReport():
 
 def adjustWindows():
     #Fenster einstellen
+    global environment
+    global windows
     if environment.lastTemperature >= stage4: 
         windows.setToStage(4)
     elif environment.lastTemperature >= stage3: 
@@ -230,6 +249,10 @@ def adjustWindows():
 def frostProtection():
     #Frostschutz Heizung
     global heatingInProgress
+    global heaterStartVal
+    global heater
+    global logger
+    global environment
     if not heatingInProgress:
         if environment.lastTemperature <= heaterStartVal: 
             heater.heaterOn()
@@ -242,23 +265,23 @@ def frostProtection():
             heatingInProgress = False
             print("stopping defrost")
 
-def heartbeat():
-    print(".")
+
 
 #Jobs anlegen
 if environment:
-    schedule.every(int(config['climate']['log_interval'])).minutes.do(environmentReport)
+    schedule.every(int(config['climate']['log_interval'])).seconds.do(environmentReport)
     schedule.every(1).seconds.do(frostProtection)
 
 if irrigation:
-    schedule.every(int(config['climate']['log_interval'])).minutes.do(irrigationReport)
+    schedule.every(int(config['climate']['log_interval'])).seconds.do(irrigationReport)
 
 if moisture:
-    schedule.every(int(config['climate']['log_interval'])).minutes.do(moistureReport)
+    schedule.every(int(config['climate']['log_interval'])).seconds.do(moistureReport)
 
 if windows:
     windows.reset()
-    schedule.every(int(config['windows']['check_interval'])).minutes.do(adjustWindows)
+    schedule.every(int(config['windows']['check_interval'])).seconds.do(adjustWindows)
+
 
 while True:
     schedule.run_pending()
