@@ -208,14 +208,18 @@ def irrigateAll():
         failSafeCounter = 20
         print("starting irrigation...")
         pump.pumpOn()
+
         while irrigation.rainWaterLevel >= startLevel - 10 and failSafeCounter > 0: #TODO config value  
             irrigation.getRainWaterLevel()
             time.sleep(1)
             print(".")
             failSafeCounter = failSafeCounter - 1
+
         pump.pumpOff()
         print("irrigation complete")
-    print("not enough water!")
+    else:
+        
+        print("not enough water!")
 
 def moistureReport():
     #Bodenfeuchtigkeit speichern
