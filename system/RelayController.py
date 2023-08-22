@@ -35,7 +35,7 @@ class Pump():
     logger = logging.getLogger(__name__)
 
     def pumpOn(self):
-        GPIO.output(heaterPin, GPIO.LOW)
+        GPIO.output(pumpPin, GPIO.LOW)
         self.__state = True
         self.logger.info("pump on")
 
