@@ -110,8 +110,6 @@ keyboard.add_hotkey('3', lambda: windows.unforce())
 keyboard.add_hotkey('4', lambda: windows.reset())
 keyboard.add_hotkey('7', lambda: heater.heaterToggle())
 keyboard.add_hotkey('8', lambda: pump.pumpToggle())
-#keyboard.add_hotkey('8', lambda: heater.heaterOn())
-#keyboard.add_hotkey('9', lambda: heater.heaterOff())
 
 #Geräte suchen und initialisieren
 scannedDevices = DeviceScanner.findDevices()
@@ -191,6 +189,8 @@ def environmentReport():
 def irrigationReport():
     global irrigation
     global dataLogger
+    irrigation.getRainWaterLevel()
+    time.sleep(1)
     print("{0} | rainwater level: {1} % - logged \r".format(
         datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         irrigation.rainWaterLevel
