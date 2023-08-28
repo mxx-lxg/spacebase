@@ -7,6 +7,8 @@
 #define FULL_VAL 20
 #define EMPTY_VAL 70
 
+#define SENSOR_PINGS 5
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
@@ -110,7 +112,7 @@ int getDistance(){
     // Calculate the distance:
     int distance = duration*0.034/2;
 
-    delayMicroseconds(10);
+    delayMicroseconds(20);
 
     return distance;
 }
@@ -118,7 +120,7 @@ int getDistance(){
 int getLevel(){
   int smallestDistance = 100;
   
-  for(var i = 0; i < 5; i++){
+  for(var i = 0; i < SENSOR_PINGS; i++){
     int meassured = getDistance();
 
     if(smallestDistance > meassured) smallestDistance = meassured;
