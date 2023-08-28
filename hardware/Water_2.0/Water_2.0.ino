@@ -116,13 +116,15 @@ int getDistance(){
 }
 
 int getLevel(){
-  int distance = getDistance();
-  /*display.setTextSize(1);
-  display.setCursor(25, display.height()-30);
-  display.print("raw ");
-  display.println(distance);
-  display.display();*/
-  return constrain(map(distance, FULL_VAL, EMPTY_VAL, 100, 0), 0, 100);
+  int smallestDistance = 100;
+  
+  for(var i = 0; i < 5; i++){
+    int meassured = getDistance();
+
+    if(smallestDistance > meassured) smallestDistance = meassured;
+  }
+
+  return constrain(map(smallestDistance, FULL_VAL, EMPTY_VAL, 100, 0), 0, 100);
 }
 
 void reportLevel(){
