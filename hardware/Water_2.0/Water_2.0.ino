@@ -120,10 +120,11 @@ int getDistance(){
 int getLevel(){
   int smallestDistance = 100;
   
-  for(var i = 0; i < SENSOR_PINGS; i++){
+  for(int i = 0; i < SENSOR_PINGS; i++){
     int meassured = getDistance();
 
     if(smallestDistance > meassured) smallestDistance = meassured;
+    delay(100);
   }
 
   return constrain(map(smallestDistance, FULL_VAL, EMPTY_VAL, 100, 0), 0, 100);
