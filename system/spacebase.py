@@ -212,11 +212,10 @@ def irrigateAll():
         while irrigation.rainWaterLevel >= startLevel - 10 and failSafeCounter > 0: #TODO config value  
             irrigation.getRainWaterLevel()
             time.sleep(1)
-            print(".")
             failSafeCounter = failSafeCounter - 1
 
         pump.pumpOff()
-        print("irrigation complete")
+        print("irrigation complete ({0})".format(failSafeCounter))
     else:
         
         print("not enough water!")
