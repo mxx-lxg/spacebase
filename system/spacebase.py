@@ -17,6 +17,7 @@ from MqttClient import MqttClient
 from Dashboard import Dashboard
 from RelayController import Heater, Pump
 import schedule
+from alive_progress import alive_bar
 
 
 #log setup
@@ -210,15 +211,20 @@ def irrigateAll():
     time.sleep(1)
     if irrigation.rainWaterLevel > 30:
         startLevel = irrigation.rainWaterLevel
-        failSafeCounter = 600
+        failSafeCounter = 400
+        amount = 10
         print("starting irrigation...")
         pump.pumpOn()
 
-        while irrigation.rainWaterLevel >= startLevel - 10 and failSafeCounter > 0: #TODO config value  
-            irrigation.getRainWaterLevel()
-            time.sleep(1)
-            failSafeCounter = failSafeCounter - 1
-            print("rainwater reserve: " + str(irrigation.rainWaterLevel) + " %", end="\r")
+        with alive_bar(amount) as bar:
+            for tick in range(failSafeCounter):
+                irrigation.getRainWaterLevel()
+                time.sleep(1)
+                failSafeCounter = failSafeCounter - 1
+
+                if irrigation.rainWaterLevel <= startLevel - 10:
+                    break
+                bar()
 
         pump.pumpOff()
         print("irrigation complete ({0})".format(failSafeCounter))
