@@ -216,15 +216,14 @@ def irrigateAll():
         print("starting irrigation...")
         pump.pumpOn()
 
-        with alive_bar(amount*10) as bar:
+        with alive_bar(manual=True, stats=False, title="water level") as bar:
             for tick in range(failSafeCounter):
                 irrigation.getRainWaterLevel()
                 time.sleep(1)
                 failSafeCounter = failSafeCounter - 1
-
+                bar(irrigation.rainWaterLevel / 100)
                 if irrigation.rainWaterLevel <= startLevel - amount:
                     break
-                bar()
 
         pump.pumpOff()
         print("irrigation complete ({0})".format(failSafeCounter))
