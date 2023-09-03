@@ -1,24 +1,24 @@
-from Irrigation import Irrigation
-from Windows import Windows
-from Environment import Environment
-from Moisture import Moisture
-from DeviceScanner import DeviceScanner
-from DataLogger import DataLogger
-import logging
-import threading
-import os
 import configparser
-import time
 import datetime
-import keyboard
+import logging
+import os
 import sys
+import threading
+import time
 from os.path import exists
-from MqttClient import MqttClient
-from Dashboard import Dashboard
-from RelayController import Heater, Pump
+
+import keyboard
 import schedule
 from alive_progress import alive_bar
-
+from Dashboard import Dashboard
+from DataLogger import DataLogger
+from DeviceScanner import DeviceScanner
+from Environment import Environment
+from Irrigation import Irrigation
+from Moisture import Moisture
+from MqttClient import MqttClient
+from RelayController import Heater, Pump
+from Windows import Windows
 
 #log setup
 # set up logging to file
@@ -216,13 +216,13 @@ def irrigateAll():
         print("starting irrigation...")
         pump.pumpOn()
 
-        with alive_bar(amount) as bar:
+        with alive_bar(amount*10) as bar:
             for tick in range(failSafeCounter):
                 irrigation.getRainWaterLevel()
                 time.sleep(1)
                 failSafeCounter = failSafeCounter - 1
 
-                if irrigation.rainWaterLevel <= startLevel - 10:
+                if irrigation.rainWaterLevel <= startLevel - amount:
                     break
                 bar()
 
@@ -230,7 +230,7 @@ def irrigateAll():
         print("irrigation complete ({0})".format(failSafeCounter))
     else:
         
-        print("not enough water!")
+        print("not enough water! ({0})".format(irrigation.rainWaterLevel))
 
 def moistureReport():
     #Bodenfeuchtigkeit speichern
@@ -263,6 +263,8 @@ def adjustWindows():
     else:
         windows.setToStage(0)
 
+
+#frost protection
 def frostProtection():
     #Frostschutz Heizung
     global heatingInProgress
@@ -302,6 +304,7 @@ if windows:
     schedule.every(int(config['windows']['check_interval'])).seconds.do(adjustWindows)
 
 
+#terminal commands
 def commandHandlerLoop():
     while True:
         command = input()
@@ -314,7 +317,7 @@ commandHandler = threading.Thread(target=commandHandlerLoop, args=())
 commandHandler.start()
 
 
-
+#main job loop
 while True:
     schedule.run_pending()
     time.sleep(1)
