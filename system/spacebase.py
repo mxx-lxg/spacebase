@@ -178,9 +178,10 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 heatingInProgress = False
 
 def listCommands():
-    print("help.....help")
-    print("water....run irrigation cycle")
-    print("wreset...reset windows")
+    print("help......help")
+    print("water.....run irrigation cycle")
+    print("wreset....reset windows")
+    print("listjobs..list scheduled jobs")
 
 def environmentReport():
     #Klimadaten speichern
@@ -316,7 +317,9 @@ def commandHandlerLoop():
             windows.reset()
         if command == "listjobs":
             global schedule
-            schedule.get_jobs()
+            jobs = schedule.get_jobs()
+            print("active jobs")
+            print(*jobs, sep = "\n")
 
 
 
