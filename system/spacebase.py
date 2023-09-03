@@ -5,6 +5,7 @@ from Moisture import Moisture
 from DeviceScanner import DeviceScanner
 from DataLogger import DataLogger
 import logging
+import threading
 import os
 import configparser
 import time
@@ -175,6 +176,10 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 #main Loop
 heatingInProgress = False
 
+def listCommands():
+    print("help - help")
+    print("water - run irrigation cycle")
+
 def environmentReport():
     #Klimadaten speichern
     global environment
@@ -280,7 +285,7 @@ if environment:
 if irrigation:
     irrigation.getRainWaterLevel()
     schedule.every(int(config['climate']['log_interval'])).seconds.do(irrigationReport)
-    schedule.every().day.at("08:30").do(irrigateAll)
+    schedule.every().day.at("11:30").do(irrigateAll)
 
 if moisture:
     schedule.every(int(config['climate']['log_interval'])).seconds.do(moistureReport)
@@ -288,6 +293,19 @@ if moisture:
 if windows:
     windows.reset()
     schedule.every(int(config['windows']['check_interval'])).seconds.do(adjustWindows)
+
+
+def commandHandlerLoop():
+    while True:
+        command = input()
+        if command == "help":
+            listCommands()
+        if command == "water":
+            irrigateAll()
+
+commandHandler = threading.Thread(target=commandHandlerLoop, args=())
+commandHandler.start()
+
 
 
 while True:
