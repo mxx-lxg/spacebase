@@ -178,8 +178,9 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 heatingInProgress = False
 
 def listCommands():
-    print("help - help")
-    print("water - run irrigation cycle")
+    print("help.....help")
+    print("water....run irrigation cycle")
+    print("wreset...reset windows")
 
 def environmentReport():
     #Klimadaten speichern
@@ -299,7 +300,6 @@ if moisture:
     schedule.every(int(config['climate']['log_interval'])).seconds.do(moistureReport)
 
 if windows:
-    windows.reset()
     schedule.every(int(config['windows']['check_interval'])).seconds.do(adjustWindows)
 
 
@@ -311,6 +311,10 @@ def commandHandlerLoop():
             listCommands()
         if command == "water":
             irrigateAll()
+        if command == "wreset":
+            global windows
+            windows.reset()
+
 
 commandHandler = threading.Thread(target=commandHandlerLoop, args=())
 commandHandler.start()
