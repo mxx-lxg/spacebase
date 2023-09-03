@@ -314,6 +314,10 @@ def commandHandlerLoop():
         if command == "wreset":
             global windows
             windows.reset()
+        if command == "listjobs":
+            global schedule
+            schedule.get_jobs()
+
 
 
 commandHandler = threading.Thread(target=commandHandlerLoop, args=())
