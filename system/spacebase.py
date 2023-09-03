@@ -210,7 +210,7 @@ def irrigateAll():
     time.sleep(1)
     if irrigation.rainWaterLevel > 30:
         startLevel = irrigation.rainWaterLevel
-        failSafeCounter = 60
+        failSafeCounter = 600
         print("starting irrigation...")
         pump.pumpOn()
 
