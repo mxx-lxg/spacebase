@@ -20,6 +20,9 @@ from MqttClient import MqttClient
 from RelayController import Heater, Pump
 from Windows import Windows
 
+#hiberantion for general winter idle
+hibernationMode = False
+
 #log setup
 # set up logging to file
 print("working directory: " + os.getcwd())
@@ -208,10 +211,11 @@ def irrigationReport():
 def irrigateAll():
     global irrigation
     global pump
+    global hibernationMode
 
     irrigation.getRainWaterLevel()
     time.sleep(1)
-    if irrigation.rainWaterLevel > 30:
+    if irrigation.rainWaterLevel > 30 and not hibernationMode:
         startLevel = irrigation.rainWaterLevel
         failSafeCounter = 400
         amount = 10
@@ -273,17 +277,20 @@ def frostProtection():
     global heater
     global logger
     global environment
-    if not heatingInProgress:
-        if environment.lastTemperature <= heaterStartVal: 
-            heater.heaterOn()
-            heatingInProgress = True
-            logger.warning("below frost threshold: " + str(environment.lastTemperature))
-            print("starting defrost")
-    else: 
-        if environment.lastTemperature >= heaterStopVal: 
-            heater.heaterOff()
-            heatingInProgress = False
-            print("stopping defrost")
+    global hibernationMode
+
+    if not hibernationMode:
+        if not heatingInProgress:
+            if environment.lastTemperature <= heaterStartVal: 
+                heater.heaterOn()
+                heatingInProgress = True
+                logger.warning("below frost threshold: " + str(environment.lastTemperature))
+                print("starting defrost")
+        else: 
+            if environment.lastTemperature >= heaterStopVal: 
+                heater.heaterOff()
+                heatingInProgress = False
+                print("stopping defrost")
 
 
 
@@ -315,6 +322,10 @@ def commandHandlerLoop():
         if command == "wreset":
             global windows
             windows.reset()
+        if command == "hibernate":
+            global hibernationMode
+            hibernationMode == True
+            print("hibernation mode activated")
         if command == "listjobs":
             global schedule
             jobs = schedule.get_jobs()
