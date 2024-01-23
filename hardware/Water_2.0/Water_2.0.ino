@@ -7,6 +7,8 @@
 #define FULL_VAL 20
 #define EMPTY_VAL 70
 
+#define SENSOR_PINGS 5
+
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
@@ -110,19 +112,22 @@ int getDistance(){
     // Calculate the distance:
     int distance = duration*0.034/2;
 
-    delayMicroseconds(10);
+    delayMicroseconds(20);
 
     return distance;
 }
 
 int getLevel(){
-  int distance = getDistance();
-  /*display.setTextSize(1);
-  display.setCursor(25, display.height()-30);
-  display.print("raw ");
-  display.println(distance);
-  display.display();*/
-  return constrain(map(distance, FULL_VAL, EMPTY_VAL, 100, 0), 0, 100);
+  int smallestDistance = 100;
+  
+  for(int i = 0; i < SENSOR_PINGS; i++){
+    int meassured = getDistance();
+
+    if(smallestDistance > meassured) smallestDistance = meassured;
+    delay(100);
+  }
+
+  return constrain(map(smallestDistance, FULL_VAL, EMPTY_VAL, 100, 0), 0, 100);
 }
 
 void reportLevel(){

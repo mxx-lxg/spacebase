@@ -1,21 +1,27 @@
-from Irrigation import Irrigation
-from Windows import Windows
-from Environment import Environment
-from Moisture import Moisture
-from DeviceScanner import DeviceScanner
-from DataLogger import DataLogger
+import configparser
+import datetime
 import logging
 import os
-import configparser
-import time
-import datetime
-import keyboard
 import sys
+import threading
+import time
 from os.path import exists
-from MqttClient import MqttClient
-from Dashboard import Dashboard
-from RelayController import Heater
 
+import keyboard
+import schedule
+from alive_progress import alive_bar
+from Dashboard import Dashboard
+from DataLogger import DataLogger
+from DeviceScanner import DeviceScanner
+from Environment import Environment
+from Irrigation import Irrigation
+from Moisture import Moisture
+from MqttClient import MqttClient
+from RelayController import Heater, Pump
+from Windows import Windows
+
+#hiberantion for general winter idle
+hibernationMode = False
 
 #log setup
 # set up logging to file
@@ -99,6 +105,7 @@ dataLogger = DataLogger(mqttClient)
 
 #GPIO
 heater = Heater()
+pump = Pump()
 
 #keypresses
 print("keyboard setup")
@@ -107,8 +114,7 @@ keyboard.add_hotkey('2', lambda: windows.forceOpened())
 keyboard.add_hotkey('3', lambda: windows.unforce())
 keyboard.add_hotkey('4', lambda: windows.reset())
 keyboard.add_hotkey('7', lambda: heater.heaterToggle())
-#keyboard.add_hotkey('8', lambda: heater.heaterOn())
-#keyboard.add_hotkey('9', lambda: heater.heaterOff())
+keyboard.add_hotkey('8', lambda: pump.pumpToggle())
 
 #Geräte suchen und initialisieren
 scannedDevices = DeviceScanner.findDevices()
@@ -170,80 +176,76 @@ print("\n getting down to business...")
 
 if mqttClient: mqttClient.publish("STATE", "hello")
 
-if windows:
-    windows.reset()
 
 #main Loop
-#TODO durch scheduler ersetzen
-lastWindowCheck = int(time.time())
-lastClimateUpdate = int(time.time())
-lastMoistureUpdate = int(time.time())
-lastPass = int(time.time())
 heatingInProgress = False
 
-while True:
-    currentPass = int(time.time())
-    windowInterval = int(config['windows']['check_interval'])
-    climateLogInterval = int(config['climate']['log_interval'])
+def listCommands():
+    print("help......help")
+    print("water.....run irrigation cycle")
+    print("wreset....reset windows")
+    print("listjobs..list scheduled jobs")
 
-#*** Sensoren ****************************************************
+def environmentReport():
+    #Klimadaten speichern
+    global environment
+    global dataLogger
+    print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        environment.lastTemperature,
+        environment.lastHumidity
+    ))
+    dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
 
-    #Klima
-    if environment and currentPass >= lastClimateUpdate + climateLogInterval:
-        #Klimadaten speichern
-        print("{0} | temperature: {1} °C | humidity: {2} % - logged \r".format(
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            environment.lastTemperature,
-            environment.lastHumidity
-        ))
-        dataLogger.logEnvironment(environment.lastTemperature, environment.lastHumidity)
-        #lastClimateUpdate = currentPass
+def irrigationReport():
+    global irrigation
+    global dataLogger
+    irrigation.getRainWaterLevel()
+    time.sleep(1)
+    print("{0} | rainwater level: {1} % - logged \r".format(
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        irrigation.rainWaterLevel
+    ))
+    dataLogger.logIrrigation(irrigation.rainWaterLevel)
 
-    #Bewässerung
-    if irrigation and currentPass >= lastClimateUpdate + climateLogInterval: 
-        irrigation.getRainWaterLevel()
-        #Klimadaten speichern
-        print("{0} | rainwater level: {1} % - logged \r".format(
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            irrigation.rainWaterLevel
-        ))
-        dataLogger.logIrrigation(irrigation.rainWaterLevel)
-        lastClimateUpdate = currentPass
+def irrigateAll():
+    global irrigation
+    global pump
+    global hibernationMode
 
-    #Bodenfeuchtigkeit
-    if moisture and currentPass >= lastMoistureUpdate + climateLogInterval:
-        #Bodenfeuchtigkeit speichern
-        for patch in moisture:
-            print("{0} | patch {1} moisture: {2} % - logged \r".format(
-                datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                patch.patchId,
-                patch.lastMoisture
-            ))
-        #TODO moisture logging
-        lastMoistureUpdate = currentPass
+    irrigation.getRainWaterLevel()
+    time.sleep(1)
+    if irrigation.rainWaterLevel > 30 and not hibernationMode:
+        startLevel = irrigation.rainWaterLevel
+        failSafeCounter = 400
+        amount = 10
+        print("starting irrigation...")
+        pump.pumpOn()
 
+        with alive_bar(manual=True, stats=False, title="water level") as bar:
+            for tick in range(failSafeCounter):
+                irrigation.getRainWaterLevel()
+                time.sleep(1)
+                failSafeCounter = failSafeCounter - 1
+                bar(irrigation.rainWaterLevel / 100)
+                if irrigation.rainWaterLevel <= startLevel - amount:
+                    break
 
-
-
-
-#*** Controller ****************************************************
-
-    #Fenster
-    if windows and environment and currentPass >= lastWindowCheck + windowInterval:
+        pump.pumpOff()
+        print("irrigation complete ({0})".format(failSafeCounter))
+    else:
         
-        if environment.lastTemperature >= stage4: 
-            windows.setToStage(4)
-        elif environment.lastTemperature >= stage3: 
-            windows.setToStage(3)
-        elif environment.lastTemperature >= stage2: 
-            windows.setToStage(2)
-        elif environment.lastTemperature >= stage1: 
-            windows.setToStage(1)
-        else:
-            windows.setToStage(0)
-    
-        lastWindowCheck = currentPass
+        print("not enough water! ({0})".format(irrigation.rainWaterLevel))
 
+def moistureReport():
+    #Bodenfeuchtigkeit speichern
+    for patch in moisture:
+        print("{0} | patch {1} moisture: {2} % - logged \r".format(
+            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            patch.patchId,
+            patch.lastMoisture
+        ))
+    #TODO moisture logging
     #Bewässerung
     #1 mal morgens
         #Bewässerung unabhängig von Feuchtigkeit
@@ -251,28 +253,92 @@ while True:
         #Liste der beete durchgehen und für jedes Moisture Sensor abfragen
         #Wenn unter Grenze Bewässerung aktivieren
 
+def adjustWindows():
+    #Fenster einstellen
+    global environment
+    global windows
+    if environment.lastTemperature >= stage4: 
+        windows.setToStage(4)
+    elif environment.lastTemperature >= stage3: 
+        windows.setToStage(3)
+    elif environment.lastTemperature >= stage2: 
+        windows.setToStage(2)
+    elif environment.lastTemperature >= stage1: 
+        windows.setToStage(1)
+    else:
+        windows.setToStage(0)
+
+
+#frost protection
+def frostProtection():
+    #Frostschutz Heizung
+    global heatingInProgress
+    global heaterStartVal
+    global heater
+    global logger
+    global environment
+    global hibernationMode
+
+    if not hibernationMode:
+        if not heatingInProgress:
+            if environment.lastTemperature <= heaterStartVal: 
+                heater.heaterOn()
+                heatingInProgress = True
+                logger.warning("below frost threshold: " + str(environment.lastTemperature))
+                print("starting defrost")
+        else: 
+            if environment.lastTemperature >= heaterStopVal: 
+                heater.heaterOff()
+                heatingInProgress = False
+                print("stopping defrost")
 
 
 
-    
-#*** Sekundentakt ****************************************************
-    if currentPass >= lastPass + 1:
+#Jobs anlegen
+if environment:
+    schedule.every(int(config['climate']['log_interval'])).seconds.do(environmentReport)
+    schedule.every(1).seconds.do(frostProtection)
 
-        if environment:
-            #Sensordaten holen
-            environment.getAtmospherics()
+if irrigation:
+    irrigation.getRainWaterLevel()
+    schedule.every(int(config['climate']['log_interval'])).seconds.do(irrigationReport)
+    schedule.every().day.at("11:30").do(irrigateAll)
 
-            #Frostschutz Heizung
-            if not heatingInProgress:
-                if environment.lastTemperature <= heaterStartVal: 
-                    heater.heaterOn()
-                    heatingInProgress = True
-                    logger.warning("below frost threshold: " + str(environment.lastTemperature))
-                    print("start heating up")
-            else: 
-                if environment.lastTemperature >= heaterStopVal: 
-                    heater.heaterOff()
-                    heatingInProgress = False
-                    print("stop heating up")
-                    
-        lastPass = currentPass
+if moisture:
+    schedule.every(int(config['climate']['log_interval'])).seconds.do(moistureReport)
+
+if windows:
+    schedule.every(int(config['windows']['check_interval'])).seconds.do(adjustWindows)
+
+
+#terminal commands
+def commandHandlerLoop():
+    while True:
+        command = input()
+        if command == "help":
+            listCommands()
+        if command == "water":
+            irrigateAll()
+        if command == "wreset":
+            global windows
+            windows.reset()
+        if command == "hibernate":
+            global hibernationMode
+            hibernationMode == True
+            print("hibernation mode activated")
+        if command == "listjobs":
+            global schedule
+            jobs = schedule.get_jobs()
+            print("active jobs")
+            print(*jobs, sep = "\n")
+
+
+
+commandHandler = threading.Thread(target=commandHandlerLoop, args=())
+commandHandler.start()
+
+
+#main job loop
+while True:
+    schedule.run_pending()
+    time.sleep(1)

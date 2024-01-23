@@ -4,3 +4,5 @@ paho-mqtt
 pySerial
 tinydb
 tk_tools
+schedule
+alive_progress
