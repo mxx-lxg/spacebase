@@ -343,9 +343,11 @@ if windows:
 #terminal commands
 def commandHandlerLoop():
     while True:
-        command = input()
+        command = input('>')
         if command == "help":
             listCommands()
+        if command == "status":
+            systemStatus()
         if command == "water":
             irrigateAll()
         if command == "wreset":
