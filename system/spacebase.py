@@ -347,6 +347,7 @@ def commandHandlerLoop():
     global hibernationMode
     global schedule
 
+
     while True:
         inputString = input('>')
 
