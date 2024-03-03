@@ -203,6 +203,7 @@ def systemStatus():
     if hibernationMode:
         print("! hibernation mode is ON")
 
+
     #config info
     print("\n********* configuration *********")
     print("\n* Heater")
