@@ -343,6 +343,10 @@ if windows:
 
 #terminal commands
 def commandHandlerLoop():
+    global windows
+    global hibernationMode
+    global schedule
+
     while True:
         inputString = input('>')
 
@@ -356,14 +360,11 @@ def commandHandlerLoop():
         if command == "water":
             irrigateAll()
         if command == "wreset":
-            global windows
             windows.reset()
         
         if command == "wset":
-            global windows
             windows.setToStage(int(args[1]))
         if command == "hibernate":
-            global hibernationMode
 
             if args[1] == "on":
                 hibernationMode == True
@@ -373,7 +374,6 @@ def commandHandlerLoop():
                 print("hibernation mode deactivated")
 
         if command == "listjobs":
-            global schedule
             jobs = schedule.get_jobs()
             print("active jobs")
             print(*jobs, sep = "\n")
