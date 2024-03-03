@@ -362,13 +362,13 @@ def commandHandlerLoop():
             systemStatus()
         if command == "water":
             irrigateAll()
+
         if command == "wreset":
             windows.reset()
-        
         if command == "wset":
             windows.setToStage(int(args[1]))
-        if command == "hibernate":
 
+        if command == "hibernate":
             if args[1] == "on":
                 hibernationMode = True
                 print("hibernation mode activated ({0})".format(hibernationMode))
