@@ -203,6 +203,8 @@ def systemStatus():
         print("! not connected to MQTT broker")
     if hibernationMode:
         print("! hibernation mode is ON")
+    else:
+        print("* hibernation mode is OFF")
 
 
     #config info
@@ -354,7 +356,7 @@ def commandHandlerLoop():
         args = inputString.split(' ')
         command = args[0]
 
-        if args == "help":
+        if command == "help":
             listCommands()
         if command == "status":
             systemStatus()
