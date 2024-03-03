@@ -158,12 +158,13 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 heatingInProgress = False
 
 def listCommands():
-    print("help.......help")
-    print("status.....system status")
-    print("water......run irrigation cycle")
-    print("wreset.....reset windows")
-    print("listjobs...list scheduled jobs")
-    print("hibernate..activate hibernation")
+    print("help................help")
+    print("status..............system status")
+    print("water...............run irrigation cycle")
+    print("wreset..............reset windows")
+    print("wset [stage]........set windows")
+    print("listjobs............list scheduled jobs")
+    print("hibernate [on/off]..activate hibernation")
 
 #system status
 def systemStatus():
@@ -343,8 +344,12 @@ if windows:
 #terminal commands
 def commandHandlerLoop():
     while True:
-        command = input('>')
-        if command == "help":
+        inputString = input('>')
+
+        args = inputString.split(' ')
+        command = args[0]
+
+        if args == "help":
             listCommands()
         if command == "status":
             systemStatus()
@@ -353,10 +358,20 @@ def commandHandlerLoop():
         if command == "wreset":
             global windows
             windows.reset()
+        
+        if command == "wset":
+            global windows
+            windows.setToStage(int(args[1]))
         if command == "hibernate":
             global hibernationMode
-            hibernationMode == True
-            print("hibernation mode activated")
+
+            if args[1] == "on":
+                hibernationMode == True
+                print("hibernation mode activated")
+            elif args[1] == "off":
+                hibernationMode == False
+                print("hibernation mode deactivated")
+
         if command == "listjobs":
             global schedule
             jobs = schedule.get_jobs()
