@@ -371,10 +371,10 @@ def commandHandlerLoop():
 
             if args[1] == "on":
                 hibernationMode == True
-                print("hibernation mode activated ({0})").format(hibernationMode)
+                print("hibernation mode activated ({0})".format(hibernationMode))
             elif args[1] == "off":
                 hibernationMode == False
-                print("hibernation mode deactivated ({0})").format(hibernationMode)
+                print("hibernation mode deactivated ({0})".format(hibernationMode))
 
         if command == "listjobs":
             jobs = schedule.get_jobs()
