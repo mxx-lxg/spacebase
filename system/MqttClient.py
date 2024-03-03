@@ -15,6 +15,7 @@ class MqttClient():
     username = None
     password = None
     logger = logging.getLogger(__name__)
+    connected = False
 
     client = None
 
@@ -31,6 +32,7 @@ class MqttClient():
         if rc == 0:
             print("Connected to MQTT Broker!")
             self.logger.info("connected to MQTT broker")
+            self.connected = True
         else:
             self.logger.info("failed to connect to MQTT broker, return code %d\n")
             print("Failed to connect to MQTT broker, return code %d\n", rc)
@@ -38,6 +40,7 @@ class MqttClient():
     def on_disconnect(self, client, userdata, rc):
         print("MQTT Disconnected with result code: %s", rc)
         self.logger.info("MQTT Disconnected with result code: %s")
+        self.connected = False
         reconnect_count, reconnect_delay = 0, FIRST_RECONNECT_DELAY
         while reconnect_count < MAX_RECONNECT_COUNT:
             print("MQTT Reconnecting in %d seconds...", reconnect_delay)

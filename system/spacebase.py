@@ -149,29 +149,6 @@ sunset = 0
 logger.info("startup complete")
 
 
-#system summary
-print("\n********* system summary *********")
-if windows:
-    print("* window actuators")
-if environment:
-    print("* environmental sensor-package")
-if irrigation:
-    print("* irrigation and water management")
-if moisture:
-    print("* soil-moisture sensors:")
-    for patch in moisture:
-        print("    " + patch.patchId)
-
-
-#config info
-print("\n********* Configuration *********")
-print("\n* Heater")
-print("   Start: " + str(heaterStartVal) + "°C | Stop: " + str(heaterStopVal) + "°C")
-print("\n* Windows")
-print("   check interval (s): " + config['windows']['check_interval'])
-print("   thresholds")
-print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(stage3) + "°C | 4: " + str(stage4) + "°C")
-
 print("\n getting down to business...")
 
 if mqttClient: mqttClient.publish("STATE", "hello")
@@ -181,10 +158,61 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 heatingInProgress = False
 
 def listCommands():
-    print("help......help")
-    print("water.....run irrigation cycle")
-    print("wreset....reset windows")
-    print("listjobs..list scheduled jobs")
+    print("help.......help")
+    print("status.....system status")
+    print("water......run irrigation cycle")
+    print("wreset.....reset windows")
+    print("listjobs...list scheduled jobs")
+    print("hibernate..activate hibernation")
+
+#system status
+def systemStatus():
+    global windows
+    global environment
+    global irrigation
+    global moisture
+    global mqttClient
+    global hibernationMode
+    global heaterStartVal
+    global heaterStopVal
+    global config
+    global stage1
+    global stage2
+    global stage3
+    global stage4
+
+    #devices
+    print("\n********* devices *********")
+    if windows:
+        print("* window actuators")
+    if environment:
+        print("* environmental sensor-package")
+    if irrigation:
+        print("* irrigation and water management")
+    if moisture:
+        print("* soil-moisture sensors:")
+        for patch in moisture:
+            print("    " + patch.patchId)
+
+    # system info
+    print("\n********* system *********")
+    if mqttClient.connected:
+        print("* connected to MQTT broker")
+    else: 
+        print("! not connected to MQTT broker")
+    if hibernationMode:
+        print("! hibernation mode is ON")
+
+    #config info
+    print("\n********* configuration *********")
+    print("\n* Heater")
+    print("   Start: " + str(heaterStartVal) + "°C | Stop: " + str(heaterStopVal) + "°C")
+    print("\n* Windows")
+    print("   check interval (s): " + config['windows']['check_interval'])
+    print("   thresholds")
+    print("   1: " + str(stage1) + "°C | 2: " + str(stage2) + "°C | 3: " + str(stage3) + "°C | 4: " + str(stage4) + "°C")
+
+
 
 def environmentReport():
     #Klimadaten speichern
