@@ -370,10 +370,10 @@ def commandHandlerLoop():
         if command == "hibernate":
 
             if args[1] == "on":
-                hibernationMode == True
+                hibernationMode = True
                 print("hibernation mode activated ({0})".format(hibernationMode))
             elif args[1] == "off":
-                hibernationMode == False
+                hibernationMode = False
                 print("hibernation mode deactivated ({0})".format(hibernationMode))
 
         if command == "listjobs":
