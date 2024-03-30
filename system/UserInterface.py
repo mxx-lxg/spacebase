@@ -56,32 +56,31 @@ class UserInterface():
             if irrigation is not None:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Wasser", "verbunden", 100, 800, self.backgroundColor)
+                self.drawStatus(screen, "Wasser", "verbunden", 100, 850, self.backgroundColor)
             else:
-                self.drawStatus(screen, "Wasser", "Fehler", 100, 800, (255, 0, 0))
+                self.drawStatus(screen, "Wasser", "Fehler", 100, 850, (255, 0, 0))
 
             if environment is not None:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
                 leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Env", "verbunden", 160, 800, self.backgroundColor)
+                self.drawStatus(screen, "Env", "verbunden", 160, 850, self.backgroundColor)
             else:
-                self.drawStatus(screen, "Env", "Fehler", 160, 800, (255, 0, 0))
+                self.drawStatus(screen, "Env", "Fehler", 160, 850, (255, 0, 0))
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
-                self.drawStatus(screen, "Fenster", "verbunden", 220, 800, self.backgroundColor)
+                self.drawStatus(screen, "Fenster", "verbunden", 220, 850, self.backgroundColor)
                 leftOffset += 220
             else:
-                self.drawStatus(screen, "Fenster", "Fehler", 220, 800, (255, 0, 0))
+                self.drawStatus(screen, "Fenster", "Fehler", 220, 850, (255, 0, 0))
 
-            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 340, 800, (255, 0, 0) if hibernationMode else self.backgroundColor)
+            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 340, 850, (255, 0, 0) if hibernationMode else self.backgroundColor)
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
-            self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 800, self.backgroundColor)
-            #self.drawStatus(screen, "Fenster", "Fehler!", 320, 800, (255, 0, 0))
-            #self.drawStatus(screen, "Wasser", "nicht verb.", 390, 800, (255, 255, 0))
+            self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 850, self.backgroundColor)
+
             #
             # RENDER YOUR GAME HERE
             # flip() the display to put your work on screen
