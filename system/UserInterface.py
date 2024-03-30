@@ -21,11 +21,12 @@ class UserInterface():
 
 
     def __init__(self, windows, irrigation, environment):
-        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment))
+        global hibernationMode
+        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment, hibernationMode))
         self.__thread.start()
 
     
-    def uiLoop(self, windows, irrigation, environment):
+    def uiLoop(self, windows, irrigation, environment, hibernationMode):
         nightMode = True
 
         if nightMode:
@@ -67,7 +68,6 @@ class UserInterface():
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
                 leftOffset += 220
 
-            global hibernationMode
             self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
