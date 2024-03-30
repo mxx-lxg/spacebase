@@ -147,7 +147,7 @@ sunrise = 0
 sunset = 0
 
 #UI
-userInterface = UserInterface(windows, irrigation, environment)
+userInterface = UserInterface(windows, irrigation, environment, mqttClient)
 
 #startup end
 logger.info("startup complete")
