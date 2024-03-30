@@ -54,7 +54,7 @@ class UserInterface():
             self.drawGauge(irrigation.rainWaterLevel, [0, 0, 100], "%", "Wass.", 40)
             self.drawGauge(environment.lastHumidity, [37, 0, 100], "%", "Luftf.", 240)
             self.drawGauge(environment.lastTemperature, [28, 0, 40], "°C", "Temp.", 440)
-            self.drawWindowIndicator(windows.currentStage, 2)
+            self.drawWindowIndicator(screen, windows.currentStage)
             #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
