@@ -146,5 +146,3 @@ class UserInterface():
         screen.blit(value_text_surface, (left+320, top))
         screen.blit(label_text_surface, (left+10, top))
 
-
-ui = userInterface()
