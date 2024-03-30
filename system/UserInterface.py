@@ -1,5 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+from pygame.locals import *
 import threading
 
 
@@ -37,14 +38,17 @@ class UserInterface():
         clock = pygame.time.Clock()
         pygame.font.init()
 
-
-        while True:
+        running = True
+        while running:
             leftOffset = 40
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                elif event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        running = False
 
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
@@ -73,7 +77,7 @@ class UserInterface():
             # flip() the display to put your work on screen
             pygame.display.flip()
 
-            clock.tick(60)  # limits FPS to 60
+            clock.tick(30)  # limits FPS to 30
 
         pygame.quit()
 
