@@ -17,6 +17,9 @@ class UserInterface():
 
     backgroundColor = (255, 255, 255)
     foregroundColor = (0, 0, 0)
+    height = 12800 #1440
+    width = 600 # 900
+
 
     def __init__(self):
         self.__thread = threading.Thread(target=self.uiLoop, args=())
@@ -33,7 +36,7 @@ class UserInterface():
 
         # pygame setup
         pygame.init()
-        screen = pygame.display.set_mode((1440, 900), fullScreen)
+        screen = pygame.display.set_mode((self.width, self.height), fullScreen)
         clock = pygame.time.Clock()
         pygame.font.init()
 
