@@ -56,18 +56,18 @@ class UserInterface():
             if irrigation is not None:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Wasser", "verbunden", 60, 800, self.foregroundColor)
+                self.drawStatus(screen, "Wasser", "verbunden", 100, 800, self.foregroundColor)
             else:
-                self.drawStatus(screen, "Wasser", "Fehler", 60, 800, (255, 0, 0))
+                self.drawStatus(screen, "Wasser", "Fehler", 100, 800, (255, 0, 0))
 
             if environment is not None:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
                 leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Env", "verbunden", 100, 800, self.foregroundColor)
+                self.drawStatus(screen, "Env", "verbunden", 160, 800, self.foregroundColor)
             else:
-                self.drawStatus(screen, "Env", "Fehler", 100, 800, (255, 0, 0))
+                self.drawStatus(screen, "Env", "Fehler", 160, 800, (255, 0, 0))
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
