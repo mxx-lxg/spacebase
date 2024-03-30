@@ -147,7 +147,7 @@ sunrise = 0
 sunset = 0
 
 #UI
-userInterface = UserInterface()
+userInterface = UserInterface(windows, irrigation, environment)
 
 #startup end
 logger.info("startup complete")
