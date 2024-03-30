@@ -17,7 +17,7 @@ class UserInterface():
 
     backgroundColor = (255, 255, 255)
     foregroundColor = (0, 0, 0)
-    height = 12800 #1440
+    height = 1280 #1440
     width = 600 # 900
 
 
