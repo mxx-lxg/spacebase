@@ -65,9 +65,9 @@ class UserInterface():
                 leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Wasser", "verbunden", 100, 800, self.foregroundColor)
+                self.drawStatus(screen, "Env", "verbunden", 100, 800, self.foregroundColor)
             else:
-                self.drawStatus(screen, "Wasser", "Fehler", 100, 800, (255, 0, 0))
+                self.drawStatus(screen, "Env", "Fehler", 100, 800, (255, 0, 0))
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
