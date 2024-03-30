@@ -1,9 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 import threading
-import time
-
-
 
 
 
@@ -50,11 +47,10 @@ class UserInterface():
 
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
-            time.sleep(5)
             self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", 40)
             self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", 240)
             self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", 440)
-            self.drawWindowIndicator(screen, windows.currentStage)
+            self.drawWindowIndicator(screen, windows.currentStage, 640)
             #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
@@ -107,21 +103,21 @@ class UserInterface():
         screen.blit(value_text_surface, (80 + offset, 670 - heightBar))
         screen.blit(label_text_surface, (80 + offset, 715 - heightBar))
 
-    def drawWindowIndicator(self, screen, value):
+    def drawWindowIndicator(self, screen, value, left):
         #Umrandung
-        pygame.draw.rect(screen, self.foregroundColor, (650, 40, 70, 155))
-        pygame.draw.rect(screen, self.foregroundColor, (650, 215, 70, 155))
-        pygame.draw.rect(screen, self.foregroundColor, (650, 390, 70, 155))
-        pygame.draw.rect(screen, self.foregroundColor, (650, 565, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (left, 40, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (left, 215, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (left, 390, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (left, 565, 70, 155))
 
         if value >= 4:
-            pygame.draw.rect(screen, self.backgroundColor, (660, 50, 50, 135))        
-        if value >= 3:
-            pygame.draw.rect(screen, self.backgroundColor, (660, 225, 50, 135))
+            pygame.draw.rect(screen, self.backgroundColor, (left+10, 50, 50, 135))        
+        if value >= 3
+            pygame.draw.rect(screen, self.backgroundColor, (left+10, 225, 50, 135))
         if value >= 2:
-            pygame.draw.rect(screen, self.backgroundColor, (660, 400, 50, 135))
+            pygame.draw.rect(screen, self.backgroundColor, (left+10, 400, 50, 135))
         if value >= 1:
-            pygame.draw.rect(screen, self.backgroundColor, (660, 575, 50, 135))
+            pygame.draw.rect(screen, self.backgroundColor, (left+10, 575, 50, 135))
         
     def drawStatusBool(self, screen, label, value, top, left, background):
         value_font = pygame.font.SysFont('Consolas Bold', 60)
