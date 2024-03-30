@@ -36,6 +36,10 @@ class UserInterface():
         clock = pygame.time.Clock()
         pygame.font.init()
 
+        global environment
+        global windows
+        global irrigation
+
         while True:
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
@@ -45,17 +49,17 @@ class UserInterface():
 
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
-            self.drawGauge(screen, [0, 0, 100], "%", "Wass.", 40)
-            self.drawGauge(screen, [37, 0, 100], "%", "Luftf.", 240)
-            self.drawGauge(screen, [28, 0, 40], "°C", "Temp.", 440)
-            self.drawWindowIndicator(screen, 2)
-            self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
-            self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
+            self.drawGauge(irrigation.rainWaterLevel, [0, 0, 100], "%", "Wass.", 40)
+            self.drawGauge(environment.lastHumidity, [37, 0, 100], "%", "Luftf.", 240)
+            self.drawGauge(environment.lastTemperature, [28, 0, 40], "°C", "Temp.", 440)
+            self.drawWindowIndicator(windows.currentStage, 2)
+            #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
+            #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
-            self.drawStatus(screen, "MQTT", "verbunden", 250, 800, self.backgroundColor)
-            self.drawStatus(screen, "Fenster", "Fehler!", 320, 800, (255, 0, 0))
-            self.drawStatus(screen, "Wasser", "nicht verb.", 390, 800, (255, 255, 0))
-            self.drawStatus(screen, "Temperatur", "verbunden", 460, 800, self.backgroundColor)
+            #self.drawStatus(screen, "MQTT", "verbunden", 250, 800, self.backgroundColor)
+            #self.drawStatus(screen, "Fenster", "Fehler!", 320, 800, (255, 0, 0))
+            #self.drawStatus(screen, "Wasser", "nicht verb.", 390, 800, (255, 255, 0))
+            #self.drawStatus(screen, "Temperatur", "verbunden", 460, 800, self.backgroundColor)
             # RENDER YOUR GAME HERE
             # flip() the display to put your work on screen
             pygame.display.flip()
