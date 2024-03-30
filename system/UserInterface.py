@@ -65,7 +65,7 @@ class UserInterface():
                 leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Env", "verbunden", 160, 800, self.foregroundColor)
+                self.drawStatus(screen, "Env", "verbunden", 160, 800, self.backgroundColor)
             else:
                 self.drawStatus(screen, "Env", "Fehler", 160, 800, (255, 0, 0))
             
