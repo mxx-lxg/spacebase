@@ -109,19 +109,19 @@ class UserInterface():
 
     def drawWindowIndicator(self, screen, value):
         #Umrandung
-        pygame.draw.rect(screen, self.foregroundColor, (640, 40, 70, 155))
-        pygame.draw.rect(screen, self.foregroundColor, (640, 215, 70, 155))
-        pygame.draw.rect(screen, self.foregroundColor, (640, 390, 70, 155))
-        pygame.draw.rect(screen, self.foregroundColor, (640, 565, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (650, 40, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (650, 215, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (650, 390, 70, 155))
+        pygame.draw.rect(screen, self.foregroundColor, (650, 565, 70, 155))
 
         if value >= 4:
-            pygame.draw.rect(screen, self.backgroundColor, (650, 50, 50, 135))        
+            pygame.draw.rect(screen, self.backgroundColor, (660, 50, 50, 135))        
         if value >= 3:
-            pygame.draw.rect(screen, self.backgroundColor, (650, 225, 50, 135))
+            pygame.draw.rect(screen, self.backgroundColor, (660, 225, 50, 135))
         if value >= 2:
-            pygame.draw.rect(screen, self.backgroundColor, (650, 400, 50, 135))
+            pygame.draw.rect(screen, self.backgroundColor, (660, 400, 50, 135))
         if value >= 1:
-            pygame.draw.rect(screen, self.backgroundColor, (650, 575, 50, 135))
+            pygame.draw.rect(screen, self.backgroundColor, (660, 575, 50, 135))
         
     def drawStatusBool(self, screen, label, value, top, left, background):
         value_font = pygame.font.SysFont('Consolas Bold', 60)
