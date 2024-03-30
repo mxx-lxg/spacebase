@@ -60,7 +60,7 @@ class UserInterface():
                 leftOffset += 210
             
             if windows is not None:
-                self.drawWindowIndicator(screen, windows.currentStage, 640)
+                self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
                 leftOffset += 210
             #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
