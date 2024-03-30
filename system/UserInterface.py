@@ -55,18 +55,20 @@ class UserInterface():
 
             if irrigation is not None:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
-                leftOffset += 210
+                leftOffset += 220
 
             if environment is not None:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
-                leftOffset += 210
+                leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
-                leftOffset += 210
+                leftOffset += 220
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
-                leftOffset += 210
-            #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
+                leftOffset += 220
+
+            global hibernationMode
+            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
             #self.drawStatus(screen, "MQTT", "verbunden", 250, 800, self.backgroundColor)
