@@ -114,6 +114,7 @@ keyboard.add_hotkey('1', lambda: windows.forceClosed())
 keyboard.add_hotkey('2', lambda: windows.forceOpened())
 keyboard.add_hotkey('3', lambda: windows.unforce())
 keyboard.add_hotkey('4', lambda: windows.reset())
+keyboard.add_hotkey('6', lambda: toggleHibernation())
 keyboard.add_hotkey('7', lambda: heater.heaterToggle())
 keyboard.add_hotkey('8', lambda: pump.pumpToggle())
 
@@ -160,6 +161,9 @@ if mqttClient: mqttClient.publish("STATE", "hello")
 
 #main Loop
 heatingInProgress = False
+
+def toggleHibernation():
+    hibernationMode = not hibernationMode
 
 def listCommands():
     print("help................help")
