@@ -1,5 +1,6 @@
 # Example file showing a basic pygame "game loop"
 import pygame
+import threading
 
 
 
@@ -11,12 +12,18 @@ COLOR_OK = (0, 255, 0)
 COLOR_WARNING = (255, 255, 0)
 COLOR_DANGER = (255, 0, 0)
 
-class userInterface():
+class UserInterface():
+    __thread = None
+
     backgroundColor = (255, 255, 255)
     foregroundColor = (0, 0, 0)
 
     def __init__(self):
+        self.__thread = threading.Thread(target=self.uiLoop, args=())
+        self.__thread.start()
 
+    
+    def uiLoop(self):
         nightMode = True
         
         if nightMode:

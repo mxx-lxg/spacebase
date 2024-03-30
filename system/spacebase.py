@@ -19,6 +19,7 @@ from Moisture import Moisture
 from MqttClient import MqttClient
 from RelayController import Heater, Pump
 from Windows import Windows
+from UserInterface import UserInterface
 
 #hiberantion for general winter idle
 hibernationMode = False
@@ -144,6 +145,9 @@ for path in scannedDevices:
 #Sonnenauf- und untergang
 sunrise = 0
 sunset = 0
+
+#UI
+ui = UserInterface()
 
 #startup end
 logger.info("startup complete")
