@@ -144,7 +144,7 @@ class UserInterface():
             pygame.draw.rect(screen, self.backgroundColor, (left+10, 575, 50, 135))
         
     def drawStatusBool(self, screen, label, value, top, left, background):
-        value_font = pygame.font.SysFont('Consolas Bold', 60)
+        value_font = pygame.font.SysFont('Liberation Mono', 60)
         
         value_text_surface = value_font.render(value, False, self.foregroundColor, background)
         label_text_surface = value_font.render(label, False, self.foregroundColor)
@@ -157,7 +157,7 @@ class UserInterface():
         textColor = self.foregroundColor
 
 
-        value_font = pygame.font.SysFont('Consolas Bold', 60)
+        value_font = pygame.font.SysFont('Liberation Mono', 60)
 
         
         pygame.draw.rect(screen, background, (left, top, 550, 57))
