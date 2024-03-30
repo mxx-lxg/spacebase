@@ -56,12 +56,18 @@ class UserInterface():
             if irrigation is not None:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
                 leftOffset += 220
+                self.drawStatus(screen, "Wasser", "verbunden", 60, 800, self.foregroundColor)
+            else:
+                self.drawStatus(screen, "Wasser", "Fehler", 60, 800, (255, 0, 0))
 
             if environment is not None:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
                 leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
+                self.drawStatus(screen, "Wasser", "verbunden", 100, 800, self.foregroundColor)
+            else:
+                self.drawStatus(screen, "Wasser", "Fehler", 100, 800, (255, 0, 0))
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
@@ -73,7 +79,7 @@ class UserInterface():
             self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 800, self.backgroundColor)
             #self.drawStatus(screen, "Fenster", "Fehler!", 320, 800, (255, 0, 0))
             #self.drawStatus(screen, "Wasser", "nicht verb.", 390, 800, (255, 255, 0))
-            #self.drawStatus(screen, "Temperatur", "verbunden", 460, 800, self.backgroundColor)
+            #
             # RENDER YOUR GAME HERE
             # flip() the display to put your work on screen
             pygame.display.flip()
