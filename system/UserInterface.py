@@ -71,7 +71,10 @@ class UserInterface():
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
+                self.drawStatus(screen, "Fenster", "verbunden", 240, 800, self.backgroundColor)
                 leftOffset += 220
+            else:
+                self.drawStatus(screen, "Fenster", "Fehler", 240, 800, (255, 0, 0))
 
             #self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
@@ -163,6 +166,6 @@ class UserInterface():
         label_text_surface = value_font.render(label, False, textColor)
         pygame.draw.line(screen, self.foregroundColor, (left, top+57), (left+550, top+57), 3)
 
-        screen.blit(value_text_surface, (left+320, top+7))
-        screen.blit(label_text_surface, (left+10, top+7))
+        screen.blit(value_text_surface, (left+320, top+8))
+        screen.blit(label_text_surface, (left+10, top+8))
 
