@@ -56,18 +56,18 @@ class UserInterface():
             if irrigation is not None:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Wasser", "verbunden", 100, 800, self.backgroundColor)
+                self.drawStatus(screen, "Wasser", "verbunden", 93, 800, self.backgroundColor)
             else:
-                self.drawStatus(screen, "Wasser", "Fehler", 100, 800, (255, 0, 0))
+                self.drawStatus(screen, "Wasser", "Fehler", 93, 800, (255, 0, 0))
 
             if environment is not None:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
                 leftOffset += 220
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
-                self.drawStatus(screen, "Env", "verbunden", 160, 800, self.backgroundColor)
+                self.drawStatus(screen, "Env", "verbunden", 146, 800, self.backgroundColor)
             else:
-                self.drawStatus(screen, "Env", "Fehler", 160, 800, (255, 0, 0))
+                self.drawStatus(screen, "Env", "Fehler", 146, 800, (255, 0, 0))
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
@@ -158,11 +158,11 @@ class UserInterface():
         value_font = pygame.font.SysFont('Consolas Bold', 60)
 
         
-        pygame.draw.rect(screen, background, (left, top, 550, 48))
+        pygame.draw.rect(screen, background, (left, top, 550, 50))
         value_text_surface = value_font.render(value, False, textColor)
         label_text_surface = value_font.render(label, False, textColor)
         pygame.draw.line(screen, self.foregroundColor, (left, top+50), (left+550, top+50), 3)
 
-        screen.blit(value_text_surface, (left+320, top))
-        screen.blit(label_text_surface, (left+10, top))
+        screen.blit(value_text_surface, (left+320, top+3))
+        screen.blit(label_text_surface, (left+10, top+3))
 
