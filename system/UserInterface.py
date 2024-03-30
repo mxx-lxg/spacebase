@@ -163,6 +163,6 @@ class UserInterface():
         label_text_surface = value_font.render(label, False, textColor)
         pygame.draw.line(screen, self.foregroundColor, (left, top+57), (left+550, top+57), 3)
 
-        screen.blit(value_text_surface, (left+320, top+6))
-        screen.blit(label_text_surface, (left+10, top+6))
+        screen.blit(value_text_surface, (left+320, top+7))
+        screen.blit(label_text_surface, (left+10, top+7))
 
