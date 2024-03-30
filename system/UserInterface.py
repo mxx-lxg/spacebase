@@ -20,12 +20,12 @@ class UserInterface():
     height = 900 # 900
 
 
-    def __init__(self, windows, irrigation, environment, mqttClient):
-        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment, mqttClient))
+    def __init__(self, windows, irrigation, environment, mqttClient, hibernationMode):
+        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment, mqttClient, hibernationMode))
         self.__thread.start()
 
     
-    def uiLoop(self, windows, irrigation, environment, mqttClient):
+    def uiLoop(self, windows, irrigation, environment, mqttClient, hibernationMode):
         nightMode = True
 
         if nightMode:
@@ -76,7 +76,7 @@ class UserInterface():
             else:
                 self.drawStatus(screen, "Fenster", "Fehler", 220, 800, (255, 0, 0))
 
-            #self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 40, 800, (0, 255,0))
+            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 300, 800, (255, 0, 0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
             self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 800, self.backgroundColor)
