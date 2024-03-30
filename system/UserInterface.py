@@ -71,10 +71,10 @@ class UserInterface():
             
             if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
-                self.drawStatus(screen, "Fenster", "verbunden", 240, 800, self.backgroundColor)
+                self.drawStatus(screen, "Fenster", "verbunden", 220, 800, self.backgroundColor)
                 leftOffset += 220
             else:
-                self.drawStatus(screen, "Fenster", "Fehler", 240, 800, (255, 0, 0))
+                self.drawStatus(screen, "Fenster", "Fehler", 220, 800, (255, 0, 0))
 
             #self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
