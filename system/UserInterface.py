@@ -158,7 +158,7 @@ class UserInterface():
         value_font = pygame.font.SysFont('Consolas Bold', 60)
 
         
-        pygame.draw.rect(screen, background, (left, top, 550, 50))
+        pygame.draw.rect(screen, background, (left, top, 550, 48))
         value_text_surface = value_font.render(value, False, textColor)
         label_text_surface = value_font.render(label, False, textColor)
         pygame.draw.line(screen, self.foregroundColor, (left, top+50), (left+550, top+50), 3)
