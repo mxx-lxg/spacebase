@@ -76,7 +76,7 @@ class UserInterface():
             else:
                 self.drawStatus(screen, "Fenster", "Fehler", 220, 800, (255, 0, 0))
 
-            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 300, 800, (255, 0, 0))
+            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 340, 800, (255, 0, 0) if hibernationMode else self.backgroundColor)
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
             self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 800, self.backgroundColor)
