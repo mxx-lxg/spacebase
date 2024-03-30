@@ -49,17 +49,17 @@ class UserInterface():
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
 
-            if irrigation:
+            if irrigation is not None:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
                 leftOffset += 210
 
-            if environment:
+            if environment is not None:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
                 leftOffset += 210
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 210
             
-            if windows:
+            if windows is not None:
                 self.drawWindowIndicator(screen, windows.currentStage, 640)
                 leftOffset += 210
             #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
