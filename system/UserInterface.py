@@ -28,7 +28,7 @@ class UserInterface():
     
     def uiLoop(self):
         nightMode = True
-        fullScreen = pygame.FULLSCREEN
+        fullScreen = None #pygame.FULLSCREEN
         
         if nightMode:
             self.backgroundColor = (0, 0, 0)
