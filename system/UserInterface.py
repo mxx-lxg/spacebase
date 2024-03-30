@@ -39,6 +39,7 @@ class UserInterface():
 
 
         while True:
+            leftOffset = 40
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
             for event in pygame.event.get():
@@ -47,10 +48,20 @@ class UserInterface():
 
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
-            self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", 40)
-            self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", 240)
-            self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", 440)
-            self.drawWindowIndicator(screen, windows.currentStage, 640)
+
+            if irrigation:
+                self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
+                leftOffset += 200
+
+            if environment:
+                self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
+                leftOffset += 200
+                self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
+                leftOffset += 200
+            
+            if windows:
+                self.drawWindowIndicator(screen, windows.currentStage, 640)
+                leftOffset += 200
             #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
@@ -112,7 +123,7 @@ class UserInterface():
 
         if value >= 4:
             pygame.draw.rect(screen, self.backgroundColor, (left+10, 50, 50, 135))        
-        if value >= 3
+        if value >= 3:
             pygame.draw.rect(screen, self.backgroundColor, (left+10, 225, 50, 135))
         if value >= 2:
             pygame.draw.rect(screen, self.backgroundColor, (left+10, 400, 50, 135))
