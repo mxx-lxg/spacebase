@@ -1,6 +1,7 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 import threading
+import time
 
 
 
@@ -49,6 +50,7 @@ class UserInterface():
 
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
+            time.sleep(5)
             self.drawGauge(irrigation.rainWaterLevel, [0, 0, 100], "%", "Wass.", 40)
             self.drawGauge(environment.lastHumidity, [37, 0, 100], "%", "Luftf.", 240)
             self.drawGauge(environment.lastTemperature, [28, 0, 40], "°C", "Temp.", 440)
