@@ -51,17 +51,17 @@ class UserInterface():
 
             if irrigation:
                 self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
-                leftOffset += 200
+                leftOffset += 210
 
             if environment:
                 self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
-                leftOffset += 200
+                leftOffset += 210
                 self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
-                leftOffset += 200
+                leftOffset += 210
             
             if windows:
                 self.drawWindowIndicator(screen, windows.currentStage, 640)
-                leftOffset += 200
+                leftOffset += 210
             #self.drawStatusBool(screen, "Winterschlaf", "AUS", 40, 800, (0, 255,0))
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
