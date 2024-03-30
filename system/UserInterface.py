@@ -17,8 +17,8 @@ class UserInterface():
 
     backgroundColor = (255, 255, 255)
     foregroundColor = (0, 0, 0)
-    height = 1280 #1440
-    width = 600 # 900
+    width = 1280 #1440
+    height = 600 # 900
 
 
     def __init__(self):
