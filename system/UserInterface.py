@@ -34,7 +34,7 @@ class UserInterface():
 
         # pygame setup
         pygame.init()
-        screen = pygame.display.set_mode((self.width, self.height))  #pygame.FULLSCREEN
+        screen = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)  #pygame.FULLSCREEN
         clock = pygame.time.Clock()
         pygame.font.init()
 
