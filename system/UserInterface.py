@@ -21,14 +21,14 @@ class UserInterface():
     height = 600 # 900
 
 
-    def __init__(self):
-        self.__thread = threading.Thread(target=self.uiLoop, args=())
+    def __init__(self, windows, irrigation, environment):
+        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment))
         self.__thread.start()
 
     
-    def uiLoop(self):
+    def uiLoop(self, windows, irrigation, environment):
         nightMode = True
-        
+
         if nightMode:
             self.backgroundColor = (0, 0, 0)
             self.foregroundColor = (255, 255, 255)
@@ -39,9 +39,6 @@ class UserInterface():
         clock = pygame.time.Clock()
         pygame.font.init()
 
-        global environment
-        global windows
-        global irrigation
 
         while True:
             # poll for events
