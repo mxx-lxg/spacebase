@@ -20,12 +20,12 @@ class UserInterface():
     height = 900 # 900
 
 
-    def __init__(self, windows, irrigation, environment, mqttClient, hibernationMode):
-        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment, mqttClient, hibernationMode))
+    def __init__(self, windows, irrigation, environment, mqttClient, hibernationMode, heater, pump):
+        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment, mqttClient, hibernationMode, heater, pump))
         self.__thread.start()
 
     
-    def uiLoop(self, windows, irrigation, environment, mqttClient, hibernationMode):
+    def uiLoop(self, windows, irrigation, environment, mqttClient, hibernationMode, heater, pump):
         nightMode = True
 
         if nightMode:
@@ -77,12 +77,13 @@ class UserInterface():
                 self.drawStatus(screen, "Fenster", "Fehler", 220, 850, (255, 0, 0))
 
             self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 340, 850, (255, 0, 0) if hibernationMode else self.backgroundColor)
+            self.drawStatusBool(screen, "Pumpe", "AN" if pump.state else "AUS", 340, 850, (255, 0, 0) if pump.state else self.backgroundColor)
+            self.drawStatusBool(screen, "Heizung", "AN" if heater.state else "AUS", 340, 850, (255, 0, 0) if pump.state else self.backgroundColor)
+
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
             self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 850, self.backgroundColor)
 
-            #
-            # RENDER YOUR GAME HERE
             # flip() the display to put your work on screen
             pygame.display.flip()
 
