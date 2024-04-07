@@ -1,6 +1,9 @@
 from paho.mqtt import client as mqtt_client
 import logging
 import time
+import datetime
+import json
+
 
 FIRST_RECONNECT_DELAY = 1
 RECONNECT_RATE = 2
@@ -80,3 +83,24 @@ class MqttClient():
         else:
             self.logger.info(f"failed to send message to topic {self.baseTopic + topic} - {status}")
             #print(f"Failed to send message to topic {self.baseTopic + topic} - {status}")
+
+    #log temperature and humidity
+    def logEnvironment(self, temp, hum):
+
+        log = {
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "temp": temp, 
+            "hum": hum
+        }
+
+        if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))
+
+    #log irrigation status
+    def logIrrigation(self, rainwater):
+
+        log = {
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "rainwater": rainwater
+        }
+
+        if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))
