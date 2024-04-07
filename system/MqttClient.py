@@ -93,7 +93,7 @@ class MqttClient():
             "hum": hum
         }
 
-        if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))
+        self.publish( "SENSORS", json.dumps(log))
 
     #log irrigation status
     def logIrrigation(self, rainwater):
@@ -103,4 +103,4 @@ class MqttClient():
             "rainwater": rainwater
         }
 
-        if self.mqttClient: self.mqttClient.publish( "SENSORS", json.dumps(log))
+        self.publish( "SENSORS", json.dumps(log))
