@@ -81,10 +81,6 @@ class Habitat():
         if self.windows:
             schedule.every(int(self.config['windows']['check_interval'])).seconds.do(self.adjustWindows)
 
-        
-        jobs = schedule.get_jobs()
-        print("active jobs")
-        print(*jobs, sep = "\n")
 
     def setup_keyboard(self):
         #keypresses

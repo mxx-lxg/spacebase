@@ -74,6 +74,11 @@ habitat = Habitat(config)
 user_interface = UserInterface(habitat = habitat)
 
 
+jobs = schedule.get_jobs()
+print("active jobs")
+print(*jobs, sep = "\n")
+
+
 #main job loop
 while True:
     schedule.run_pending()
