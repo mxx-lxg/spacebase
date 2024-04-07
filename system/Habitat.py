@@ -42,6 +42,7 @@ class Habitat():
 
         self.initialize_devices()
         self.create_jobs()
+        self.setup_keyboard()
 
 
     def initialize_devices(self):
@@ -85,7 +86,7 @@ class Habitat():
         print("active jobs")
         print(*jobs, sep = "\n")
 
-    def setup_keayboard(self):
+    def setup_keyboard(self):
         #keypresses
         print("keyboard setup")
         keyboard.add_hotkey('1', lambda: self.windows.forceClosed())
