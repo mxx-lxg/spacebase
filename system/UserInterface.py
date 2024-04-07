@@ -78,7 +78,7 @@ class UserInterface():
 
             self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 340, 850, (255, 0, 0) if hibernationMode else self.backgroundColor)
             self.drawStatusBool(screen, "Pumpe", "AN" if pump.state else "AUS", 400, 850, (255, 0, 0) if pump.state else self.backgroundColor)
-            self.drawStatusBool(screen, "Heizung", "AN" if heater.state else "AUS", 460, 850, (255, 0, 0) if pump.state else self.backgroundColor)
+            self.drawStatusBool(screen, "Heizung", "AN" if heater.state else "AUS", 460, 850, (255, 0, 0) if heater.state else self.backgroundColor)
 
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
