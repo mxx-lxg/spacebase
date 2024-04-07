@@ -29,6 +29,7 @@ class Habitat():
     moisture = [] 
 
     def __init__(self, config):
+        print("new spacebase")
         self.config = config
                 
         self.heaterStartVal = float(config['climate']['heater_threshold'])
@@ -77,6 +78,11 @@ class Habitat():
 
         if self.windows:
             schedule.every(int(self.config['windows']['check_interval'])).seconds.do(self.adjustWindows)
+
+        
+        jobs = schedule.get_jobs()
+        print("active jobs")
+        print(*jobs, sep = "\n")
             
             
     def environmentReport(self):

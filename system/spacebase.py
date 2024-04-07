@@ -71,7 +71,7 @@ config.read(os.getcwd() + '/spacebase.conf')
 habitat = Habitat(config)
 
 #UI
-user_interface = UserInterface(habitat = habitat)
+#user_interface = UserInterface(habitat = habitat)
 
 
 #main job loop
