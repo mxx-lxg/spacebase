@@ -20,8 +20,8 @@ class UserInterface():
     height = 900 # 900
 
 
-    def __init__(self, windows, irrigation, environment, mqttClient, hibernationMode, heater, pump):
-        self.__thread = threading.Thread(target=self.uiLoop, args=(windows, irrigation, environment, mqttClient, hibernationMode, heater, pump))
+    def __init__(self, habitat):
+        self.__thread = threading.Thread(target=self.uiLoop, args=(habitat.windows, habitat.irrigation, habitat.environment, habitat.mqttClient, habitat.hibernation_mode, habitat.heater, habitat.pump))
         self.__thread.start()
 
     
