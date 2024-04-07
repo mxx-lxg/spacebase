@@ -2,6 +2,7 @@ import logging
 import schedule
 import time
 import datetime
+import keyboard
 
 from RelayController import Heater, Pump
 from DeviceScanner import DeviceScanner
@@ -83,8 +84,23 @@ class Habitat():
         jobs = schedule.get_jobs()
         print("active jobs")
         print(*jobs, sep = "\n")
+
+    def setup_keayboard(self):
+        #keypresses
+        print("keyboard setup")
+        keyboard.add_hotkey('1', lambda: self.windows.forceClosed())
+        keyboard.add_hotkey('2', lambda: self.windows.forceOpened())
+        keyboard.add_hotkey('3', lambda: self.windows.unforce())
+        keyboard.add_hotkey('4', lambda: self.windows.reset())
+        keyboard.add_hotkey('6', lambda: self.toggleHibernation())
+        keyboard.add_hotkey('7', lambda: self.heater.heaterToggle())
+        keyboard.add_hotkey('8', lambda: self.pump.pumpToggle())
             
-            
+        
+    def toggleHibernation(self):
+        self.hibernation_mode = not self.hibernation_mode
+        print("hibernation mode is ({0})".format(self.hibernation_mode))
+                
     def environmentReport(self):
         #Klimadaten speichern
         self.mqttClient.logEnvironment(self.environment.lastTemperature, self.environment.lastHumidity)
