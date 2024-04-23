@@ -104,3 +104,21 @@ class MqttClient():
         }
 
         self.publish( "SENSORS", json.dumps(log))
+    
+    def logHeater(self, state):
+        
+        log = {
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "heater": state
+        }
+
+        self.publish( "ACTORS", json.dumps(log))
+
+    def logWindows(self, state):
+        
+        log = {
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "windows": state
+        }
+        
+        self.publish( "ACTORS", json.dumps(log))

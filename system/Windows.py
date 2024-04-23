@@ -46,7 +46,7 @@ class Windows(Device):
             self.logger.info("setting windows to stage: " + str(stage))
             print("setting windows to stage: " + str(stage), end="\r\n")
             self.sendCommand("STAGE:" + str(stage))
-            if self.mqttClient: self.mqttClient.publish("WINDOWS", stage)
+            if self.mqttClient: self.mqttClient.logWindows(stage)
         else:
             print("window position locked. No action. \r\n")
 

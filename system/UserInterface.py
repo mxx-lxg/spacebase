@@ -2,7 +2,7 @@
 import pygame
 from pygame.locals import *
 import threading
-
+import logging
 
 
 COLOR_WHITE = (255, 255, 255)
@@ -18,7 +18,7 @@ class UserInterface():
     foregroundColor = (0, 0, 0)
     width = 1440 #1440
     height = 900 # 900
-
+    logger = logging.getLogger(__name__)
 
     def __init__(self, habitat):
         self.__thread = threading.Thread(target=self.uiLoop, args=(habitat.windows, habitat.irrigation, habitat.environment, habitat.mqttClient, habitat.hibernation_mode, habitat.heater, habitat.pump))
