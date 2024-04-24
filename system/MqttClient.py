@@ -114,6 +114,15 @@ class MqttClient():
 
         self.publish( "ACTORS", json.dumps(log))
 
+    def logPump(self, state):
+        
+        log = {
+            "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "pump": state
+        }
+
+        self.publish( "ACTORS", json.dumps(log))
+
     def logWindows(self, state):
         
         log = {
