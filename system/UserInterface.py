@@ -21,11 +21,11 @@ class UserInterface():
     logger = logging.getLogger(__name__)
 
     def __init__(self, habitat):
-        self.__thread = threading.Thread(target=self.uiLoop, args=(habitat.windows, habitat.irrigation, habitat.environment, habitat.mqttClient, habitat.hibernation_mode, habitat.heater, habitat.pump))
+        self.__thread = threading.Thread(target=self.uiLoop, args=(habitat, habitat.windows, habitat.irrigation, habitat.environment, habitat.mqttClient, habitat.hibernation_mode, habitat.heater, habitat.pump))
         self.__thread.start()
 
     
-    def uiLoop(self, windows, irrigation, environment, mqttClient, hibernationMode, heater, pump):
+    def uiLoop(self, habitat, windows, irrigation, environment, mqttClient, hibernationMode, heater, pump):
         nightMode = True
 
         if nightMode:
@@ -76,7 +76,7 @@ class UserInterface():
             else:
                 self.drawStatus(screen, "Fenster", "Fehler", 220, 850, (255, 0, 0))
 
-            self.drawStatusBool(screen, "Winterschlaf", "AN" if hibernationMode else "AUS", 340, 850, (255, 0, 0) if hibernationMode else self.backgroundColor)
+            self.drawStatusBool(screen, "Winterschlaf", "AN" if habitat.hibernation_mode else "AUS", 340, 850, (255, 0, 0) if habitat.hibernation_mode else self.backgroundColor)
             self.drawStatusBool(screen, "Pumpe", "AN" if pump.state else "AUS", 400, 850, (255, 0, 0) if pump.state else self.backgroundColor)
             self.drawStatusBool(screen, "Heizung", "AN" if heater.state else "AUS", 460, 850, (255, 0, 0) if heater.state else self.backgroundColor)
 
