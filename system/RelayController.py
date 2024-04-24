@@ -13,15 +13,21 @@ GPIO.output(pumpPin, GPIO.HIGH)
 class Heater():
     state = False
     logger = logging.getLogger(__name__)
+    mqttClient = None
+
+    def __init__(self, mqttClient):
+        self.mqttClient = mqttClient
 
     def heaterOn(self):
         GPIO.output(heaterPin, GPIO.LOW)
         self.state = True
+        self.mqttClient.logHeater(True)
         self.logger.info("heater on")
 
     def heaterOff(self):
         GPIO.output(heaterPin, GPIO.HIGH)
         self.state = False
+        self.mqttClient.logHeater(False)
         self.logger.info("heater off")
 
     def heaterToggle(self):
@@ -33,15 +39,21 @@ class Heater():
 class Pump():
     state = False
     logger = logging.getLogger(__name__)
+    mqttClient = None
+
+    def __init__(self, mqttClient):
+        self.mqttClient = mqttClient
 
     def pumpOn(self):
         GPIO.output(pumpPin, GPIO.LOW)
         self.state = True
+        self.mqttClient.logPump(True)
         self.logger.info("pump on")
 
     def pumpOff(self):
         GPIO.output(pumpPin, GPIO.HIGH)
         self.state = False
+        self.mqttClient.logPump(False)
         self.logger.info("pump off")
 
     def pumpToggle(self):

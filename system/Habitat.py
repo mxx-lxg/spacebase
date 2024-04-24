@@ -22,8 +22,8 @@ class Habitat():
     irrigationVal = 20
     mqttClient = None
 
-    heater = Heater()
-    pump = Pump()
+    heater = None
+    pump = None
     windows = None
     irrigation = None
     environment = None
@@ -39,6 +39,9 @@ class Habitat():
 
         #MQTT Client
         self.mqttClient = MqttClient(config['mqtt'])
+
+        self.heater = Heater(self.mqttClient)
+        self.pump = Pump(self.mqttClient)
 
         self.initialize_devices()
         self.create_jobs()
