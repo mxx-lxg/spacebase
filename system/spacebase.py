@@ -5,6 +5,7 @@ import os
 from os.path import exists
 import configparser
 from UserInterface import UserInterface
+from TailLog import TailLogger
 import sys
 import schedule
 import time
@@ -21,12 +22,18 @@ logging.basicConfig(
 )
 # set up logging to console
 console = logging.StreamHandler()
-console.setLevel(logging.ERROR)
+console.setLevel(logging.ERROR)# set up logging to UI
+tailLogger = TailLogger(10)
+log_ui_handler = tailLogger.log_handler
+
 # set a format which is simpler for console use
 formatter = logging.Formatter('[%(asctime)s] %(name)s: %(levelname)s %(message)s')
 console.setFormatter(formatter)
+log_ui_handler.setFormatter(formatter)
 # add the handler to the root logger
 logging.getLogger('').addHandler(console)
+logging.getLogger('').addHandler(log_ui_handler)
+
 logger = logging.getLogger(__name__)
 
 logger.info("startup")
@@ -71,7 +78,7 @@ config.read(os.getcwd() + '/spacebase.conf')
 habitat = Habitat(config)
 
 #UI
-user_interface = UserInterface(habitat = habitat)
+user_interface = UserInterface(habitat = habitat, tailLogger = tailLogger)
 
 
 jobs = schedule.get_jobs()

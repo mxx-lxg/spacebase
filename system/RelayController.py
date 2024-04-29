@@ -17,6 +17,7 @@ class Heater():
 
     def __init__(self, mqttClient):
         self.mqttClient = mqttClient
+        self.logger.info(f"heater init")
 
     def heaterOn(self):
         GPIO.output(heaterPin, GPIO.LOW)
@@ -43,6 +44,7 @@ class Pump():
 
     def __init__(self, mqttClient):
         self.mqttClient = mqttClient
+        self.logger.info(f"pump init")
 
     def pumpOn(self):
         GPIO.output(pumpPin, GPIO.LOW)

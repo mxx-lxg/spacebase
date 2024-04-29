@@ -2,11 +2,14 @@ import datetime
 from tinydb import TinyDB, Query
 import json
 import os
+import logging
 
 #databases and logging handler
 class DataLogger():
     atmosLog = None
     mqttClient = None
+    logger = logging.getLogger(__name__)
+
     def __init__(self, mqttClient=None):
         self.atmosLog = TinyDB(os.getcwd() + '/atmos_db.json')
         self.mqttClient = mqttClient

@@ -37,12 +37,12 @@ class MqttClient():
             self.logger.info("connected to MQTT broker")
             self.connected = True
         else:
-            self.logger.info("failed to connect to MQTT broker, return code %d\n")
+            self.logger.error("failed to connect to MQTT broker, return code %d\n")
             print("Failed to connect to MQTT broker, return code %d\n", rc)
 
     def on_disconnect(self, client, userdata, rc):
         print("MQTT Disconnected with result code: %s", rc)
-        self.logger.info("MQTT Disconnected with result code: %s")
+        self.logger.error("MQTT Disconnected with result code: %s")
         self.connected = False
         reconnect_count, reconnect_delay = 0, FIRST_RECONNECT_DELAY
         while reconnect_count < MAX_RECONNECT_COUNT:
@@ -81,11 +81,12 @@ class MqttClient():
             self.logger.info(f"send to topic `{self.baseTopic + topic}`")
             #print(f"Send to topic `{self.baseTopic + topic}`")
         else:
-            self.logger.info(f"failed to send message to topic {self.baseTopic + topic} - {status}")
+            self.logger.error(f"failed to send message to topic {self.baseTopic + topic} - {status}")
             #print(f"Failed to send message to topic {self.baseTopic + topic} - {status}")
 
     #log temperature and humidity
     def logEnvironment(self, temp, hum):
+        self.logger.info(f"reporting temperature, humidity to broker")
 
         log = {
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -97,6 +98,7 @@ class MqttClient():
 
     #log irrigation status
     def logIrrigation(self, rainwater):
+        self.logger.info(f"reporting rainwater level to broker")
 
         log = {
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -106,6 +108,7 @@ class MqttClient():
         self.publish( "SENSORS", json.dumps(log))
     
     def logHeater(self, state):
+        self.logger.info(f"reporting heater status to broker")
         
         log = {
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -115,6 +118,7 @@ class MqttClient():
         self.publish( "ACTORS", json.dumps(log))
 
     def logPump(self, state):
+        self.logger.info(f"reporting pump status to broker")
         
         log = {
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -124,6 +128,7 @@ class MqttClient():
         self.publish( "ACTORS", json.dumps(log))
 
     def logWindows(self, state):
+        self.logger.info(f"reporting window status to broker")
         
         log = {
             "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

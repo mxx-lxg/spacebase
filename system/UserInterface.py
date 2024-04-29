@@ -20,12 +20,12 @@ class UserInterface():
     height = 900 # 900
     logger = logging.getLogger(__name__)
 
-    def __init__(self, habitat):
-        self.__thread = threading.Thread(target=self.uiLoop, args=(habitat, habitat.windows, habitat.irrigation, habitat.environment, habitat.mqttClient, habitat.hibernation_mode, habitat.heater, habitat.pump))
+    def __init__(self, habitat, tailLogger):
+        self.__thread = threading.Thread(target=self.uiLoop, args=(habitat, tailLogger))
         self.__thread.start()
 
     
-    def uiLoop(self, habitat, windows, irrigation, environment, mqttClient, hibernationMode, heater, pump):
+    def uiLoop(self, habitat, tailLogger):
         nightMode = True
 
         if nightMode:
@@ -53,36 +53,38 @@ class UserInterface():
             # fill the screen with a color to wipe away anything from last frame
             screen.fill(self.backgroundColor)
 
-            if irrigation is not None:
-                self.drawGauge(screen, [irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
+            if habitat.irrigation is not None:
+                self.drawGauge(screen, [habitat.irrigation.rainWaterLevel, 0, 100], "%", "Wass.", leftOffset)
                 leftOffset += 220
                 self.drawStatus(screen, "Bewässerung", "verbunden", 100, 850, self.backgroundColor)
             else:
                 self.drawStatus(screen, "Bewässerung", "Fehler", 100, 850, (255, 0, 0))
 
-            if environment is not None:
-                self.drawGauge(screen, [environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
+            if habitat.environment is not None:
+                self.drawGauge(screen, [habitat.environment.lastHumidity, 0, 100], "%", "Luftf.", leftOffset)
                 leftOffset += 220
-                self.drawGauge(screen, [environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
+                self.drawGauge(screen, [habitat.environment.lastTemperature, 0, 40], "°C", "Temp.", leftOffset)
                 leftOffset += 220
                 self.drawStatus(screen, "Sensoren", "verbunden", 160, 850, self.backgroundColor)
             else:
                 self.drawStatus(screen, "Sensoren", "Fehler", 160, 850, (255, 0, 0))
             
-            if windows is not None:
-                self.drawWindowIndicator(screen, windows.currentStage, leftOffset)
+            if habitat.windows is not None:
+                self.drawWindowIndicator(screen, habitat.windows.currentStage, leftOffset)
                 self.drawStatus(screen, "Fenster", "verbunden", 220, 850, self.backgroundColor)
                 leftOffset += 220
             else:
                 self.drawStatus(screen, "Fenster", "Fehler", 220, 850, (255, 0, 0))
 
             self.drawStatusBool(screen, "Winterschlaf", "AN" if habitat.hibernation_mode else "AUS", 340, 850, (255, 0, 0) if habitat.hibernation_mode else self.backgroundColor)
-            self.drawStatusBool(screen, "Pumpe", "AN" if pump.state else "AUS", 400, 850, (255, 0, 0) if pump.state else self.backgroundColor)
-            self.drawStatusBool(screen, "Heizung", "AN" if heater.state else "AUS", 460, 850, (255, 0, 0) if heater.state else self.backgroundColor)
+            self.drawStatusBool(screen, "Pumpe", "AN" if habitat.pump.state else "AUS", 400, 850, (255, 0, 0) if habitat.pump.state else self.backgroundColor)
+            self.drawStatusBool(screen, "Heizung", "AN" if habitat.heater.state else "AUS", 460, 850, (255, 0, 0) if habitat.heater.state else self.backgroundColor)
 
             #self.drawStatusBool(screen, "Nachtmodus", "AN", 110, 800, self.backgroundColor)
 
-            self.drawStatus(screen, "MQTT", "verbunden" if mqttClient.connected else "nicht ver.", 40, 850, self.backgroundColor)
+            self.drawStatus(screen, "MQTT", "verbunden" if habitat.mqttClient.connected else "nicht ver.", 40, 850, self.backgroundColor)
+
+            self.drawLog(screen, tailLogger)
 
             # flip() the display to put your work on screen
             pygame.display.flip()
@@ -101,6 +103,13 @@ class UserInterface():
 
         # Convert the 0-1 range into a value in the right range.
         return rightMin + (valueScaled * rightSpan)
+    
+    def drawLog(self, screen, tailLogger):
+        value_font = pygame.font.SysFont('Consolas Bold', 30)
+        value_text_surface = value_font.render(tailLogger.contents(), False, self.foregroundColor, self.backgroundColor)
+
+        
+        screen.blit(value_text_surface, (10, 730))
 
     def drawGauge(self, screen, data, unit, label, offset):  
         value = data[0]
