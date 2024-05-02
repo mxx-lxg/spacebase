@@ -106,7 +106,7 @@ class UserInterface():
     
     def drawLog(self, screen, tailLogger):
         value_font = pygame.font.SysFont('Consolas', 20)
-        os = 730
+        pos = 730
 
         for log in tailLogger.contents_list():
             bg_color = (0,0,0)

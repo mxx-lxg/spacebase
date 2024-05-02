@@ -60,7 +60,7 @@ logger.info("done")
 value_font = pygame.font.SysFont('Consolas', 20)
 
 print(tailLogger.contents_list())
-
+timer = 0
 while True:
     pos = 10
 
@@ -71,4 +71,10 @@ while True:
         value_text_surface = value_font.render(log, False, (255,255,255), bg_color)
         screen.blit(value_text_surface, (10, pos))
         pos+=25
+    
+    if timer > 90:
+        logger.info("timed log")
+
+    timer+=1
+    clock.tick(30)  # limits FPS to 30
     pygame.display.flip()
