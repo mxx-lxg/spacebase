@@ -105,7 +105,7 @@ class UserInterface():
         return rightMin + (valueScaled * rightSpan)
     
     def drawLog(self, screen, tailLogger):
-        value_font = pygame.font.SysFont('Consolas', 20)
+        value_font = pygame.font.SysFont('Consolas', 25)
         pos = 730
 
         for log in tailLogger.contents_list():
