@@ -113,7 +113,7 @@ class UserInterface():
             if "ERROR" in log:
                 bg_color = (255,0,0)
             value_text_surface = value_font.render(log, False, (255,255,255), bg_color)
-            screen.blit(value_text_surface, (10, pos))
+            screen.blit(value_text_surface, (40, pos))
             pos+=35
 
     def drawGauge(self, screen, data, unit, label, offset):  

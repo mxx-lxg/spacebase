@@ -23,7 +23,7 @@ logging.basicConfig(
 # set up logging to console
 console = logging.StreamHandler()
 console.setLevel(logging.ERROR)# set up logging to UI
-tailLogger = TailLogger(10)
+tailLogger = TailLogger(5)
 log_ui_handler = tailLogger.log_handler
 
 # set a format which is simpler for console use
