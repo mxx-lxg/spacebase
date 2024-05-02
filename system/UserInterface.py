@@ -105,7 +105,7 @@ class UserInterface():
         return rightMin + (valueScaled * rightSpan)
     
     def drawLog(self, screen, tailLogger):
-        value_font = pygame.font.SysFont('Consolas', 25)
+        value_font = pygame.font.SysFont('Consolas', 30)
         pos = 730
 
         for log in tailLogger.contents_list():
@@ -114,7 +114,7 @@ class UserInterface():
                 bg_color = (255,0,0)
             value_text_surface = value_font.render(log, False, (255,255,255), bg_color)
             screen.blit(value_text_surface, (10, pos))
-            pos+=25
+            pos+=35
 
     def drawGauge(self, screen, data, unit, label, offset):  
         value = data[0]
