@@ -76,7 +76,7 @@ class Habitat():
         if self.irrigation:
             self.irrigation.getRainWaterLevel()
             schedule.every(int(self.config['climate']['log_interval'])).seconds.do(self.irrigationReport)
-            schedule.every().day.at("11:30").do(self.irrigateAll)
+            schedule.every().day.at("22:00").do(self.irrigateAll)
 
         if self.moisture:
             schedule.every(int(self.config['climate']['log_interval'])).seconds.do(self.moistureReport)
@@ -160,7 +160,7 @@ class Habitat():
         time.sleep(1)
         if self.irrigation.rainWaterLevel > 30 and not self.hibernation_mode:
             startLevel = self.irrigation.rainWaterLevel
-            failSafeCounter = 400
+            failSafeCounter = 90
             amount = 10
             print("starting irrigation...")
             self.pump.pumpOn()
