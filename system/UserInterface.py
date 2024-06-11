@@ -108,7 +108,7 @@ class UserInterface():
         value_font = pygame.font.SysFont('Consolas', 30)
         pos = 730
 
-        for log in tailLogger.contents_list():
+        for log in list(tailLogger.contents_list()):
             bg_color = (0,0,0)
             if "ERROR" in log:
                 bg_color = (255,0,0)
